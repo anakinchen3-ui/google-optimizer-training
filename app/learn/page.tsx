@@ -35,7 +35,7 @@ interface HomeworkSubmission {
   scoredAt?: string;
 }
 
-type TabKey = 'learn' | 'exam' | 'homework' | 'reflection' | 'faq';
+type TabKey = 'learn' | 'exam' | 'homework' | 'reflection' | 'faq' | 'users';
 
 function getIconByType(type: LessonType) {
   switch (type) {
@@ -661,6 +661,172 @@ function HomeworkPanel({ user }: { user: User }) {
   );
 }
 
+function UserManagementPanel({ user }: { user: User }) {
+  const [roles, setRoles] = useState<Record<string, 'admin' | 'mentor' | 'student'>>({});
+  const [loading, setLoading] = useState(false);
+  const [userIdInput, setUserIdInput] = useState('');
+  const [roleInput, setRoleInput] = useState<'mentor' | 'admin' | 'student'>('mentor');
+  const [saving, setSaving] = useState(false);
+
+  const fetchRoles = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/users/roles?requesterRole=${user.role}`);
+      const data = await res.json();
+      if (data.ok && data.data) {
+        setRoles(data.data);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  }, [user.role]);
+
+  useEffect(() => {
+    fetchRoles();
+  }, [fetchRoles]);
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userIdInput.trim()) return;
+    setSaving(true);
+    try {
+      const res = await fetch('/api/users/roles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requesterRole: user.role,
+          userId: userIdInput.trim(),
+          role: roleInput,
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setUserIdInput('');
+        await fetchRoles();
+      } else {
+        alert(data.error || '保存失败');
+      }
+    } catch {
+      alert('网络错误，请重试');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (targetUserId: string) => {
+    if (!confirm('确定要移除该用户的特殊权限吗？移除后将恢复为学员身份。')) return;
+    try {
+      const res = await fetch('/api/users/roles', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          requesterRole: user.role,
+          userId: targetUserId,
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        await fetchRoles();
+      } else {
+        alert(data.error || '删除失败');
+      }
+    } catch {
+      alert('网络错误，请重试');
+    }
+  };
+
+  return (
+    <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">用户权限管理</h2>
+        <p className="text-slate-500 mb-6">为其他飞书用户分配导师或管理员角色。需要知道对方的飞书 user_id。</p>
+
+        <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
+          <h3 className="font-semibold text-slate-900 mb-4">添加/修改权限</h3>
+          <form onSubmit={handleSave} className="flex flex-col md:flex-row gap-3">
+            <input
+              type="text"
+              value={userIdInput}
+              onChange={(e) => setUserIdInput(e.target.value)}
+              placeholder="飞书 user_id（如 ou_xxx）"
+              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+              required
+            />
+            <select
+              value={roleInput}
+              onChange={(e) => setRoleInput(e.target.value as 'mentor' | 'admin' | 'student')}
+              className="px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            >
+              <option value="mentor">导师</option>
+              <option value="admin">管理员</option>
+              <option value="student">学员</option>
+            </select>
+            <button
+              type="submit"
+              disabled={saving}
+              className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors text-sm font-medium"
+            >
+              {saving ? '保存中...' : '保存'}
+            </button>
+          </form>
+        </div>
+
+        <div className="bg-white rounded-xl border border-slate-200 p-5">
+          <h3 className="font-semibold text-slate-900 mb-4">当前权限列表</h3>
+          {loading && Object.keys(roles).length === 0 && (
+            <div className="text-center py-8">
+              <svg className="animate-spin h-5 w-5 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </div>
+          )}
+
+          {!loading && Object.keys(roles).length === 0 && (
+            <p className="text-sm text-slate-400 text-center py-8">暂无自定义权限记录，所有未配置用户默认为学员。</p>
+          )}
+
+          {Object.keys(roles).length > 0 && (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-slate-500 border-b border-slate-100">
+                    <th className="pb-2 font-medium">飞书 user_id</th>
+                    <th className="pb-2 font-medium">角色</th>
+                    <th className="pb-2 font-medium text-right">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {Object.entries(roles).map(([uid, r]) => (
+                    <tr key={uid} className="border-b border-slate-50 last:border-0">
+                      <td className="py-3 text-slate-900 font-mono text-xs">{uid}</td>
+                      <td className="py-3">
+                        <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getRoleBadgeColor(r)}`}>
+                          {getRoleLabel(r)}
+                        </span>
+                      </td>
+                      <td className="py-3 text-right">
+                        <button
+                          onClick={() => handleDelete(uid)}
+                          className="text-xs text-red-600 hover:text-red-700 hover:underline"
+                        >
+                          移除
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 interface Reflection {
   id: string;
   topic: string;
@@ -1006,6 +1172,7 @@ export default function LearnPage() {
     { key: 'homework', label: '作业' },
     { key: 'reflection', label: '学习心得' },
     { key: 'faq', label: 'FAQ' },
+    ...(user.role === 'admin' ? [{ key: 'users' as TabKey, label: '用户管理' }] : []),
   ];
 
   return (
@@ -1260,6 +1427,7 @@ export default function LearnPage() {
 
         {activeTab === 'exam' && <ExamPanel />}
         {activeTab === 'homework' && user && <HomeworkPanel user={user} />}
+        {activeTab === 'users' && user && user.role === 'admin' && <UserManagementPanel user={user} />}
         {activeTab === 'reflection' && <ReflectionPanel userName={user.name} />}
         {activeTab === 'faq' && <FAQPanel />}
       </div>

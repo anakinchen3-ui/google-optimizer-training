@@ -1,13 +1,16 @@
 export const runtime = 'edge';
 
+import { kv } from '@vercel/kv';
+
 const APP_ID = 'cli_a954b3694f381cb0';
 const APP_SECRET = 'u9yUFAb1iMdQqQ6IugXv8fmrp2ERz8m7';
 
-// Hardcoded role mapping (user_id -> role)
-// In production this should come from a database
-const ROLE_MAP: Record<string, 'admin' | 'mentor' | 'student'> = {
+// Hardcoded fallback role mapping (user_id -> role)
+const FALLBACK_ROLE_MAP: Record<string, 'admin' | 'mentor' | 'student'> = {
   'ou_22dcf59d9895159de15367a680387aed': 'admin',
 };
+
+const KV_KEY = 'user:roles';
 
 export async function POST(request: Request) {
   try {
@@ -91,7 +94,9 @@ export async function POST(request: Request) {
 
     const user = userInfoData.data;
     const userId = user.user_id || user.open_id;
-    const role = ROLE_MAP[userId] || 'student';
+
+    const kvRoles: Record<string, 'admin' | 'mentor' | 'student'> = (await kv.get(KV_KEY)) || {};
+    const role = kvRoles[userId] ?? FALLBACK_ROLE_MAP[userId] ?? 'student';
 
     return Response.json({
       ok: true,
