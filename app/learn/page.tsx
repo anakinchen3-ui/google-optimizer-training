@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { courseData, type Lesson, type LessonType, getLessonById, getFirstLesson } from './data';
+import { courseData, homeworkData, type Lesson, type LessonType, getLessonById, getFirstLesson } from './data';
 
 const STORAGE_KEY = 'google-learn-progress-v1';
 const USER_KEY = 'google-learn-user-v1';
@@ -22,7 +22,20 @@ export interface User {
   access_token: string;
 }
 
-type TabKey = 'learn' | 'exam' | 'reflection' | 'faq';
+interface HomeworkSubmission {
+  id: string;
+  userId: string;
+  userName: string;
+  homeworkId: string;
+  content: string;
+  createdAt: string;
+  score?: number;
+  feedback?: string;
+  scoredBy?: string;
+  scoredAt?: string;
+}
+
+type TabKey = 'learn' | 'exam' | 'homework' | 'reflection' | 'faq';
 
 function getIconByType(type: LessonType) {
   switch (type) {
@@ -202,6 +215,448 @@ function ExamPanel() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function HomeworkPanel({ user }: { user: User }) {
+  const isMentor = user.role === 'mentor' || user.role === 'admin';
+  const [submissions, setSubmissions] = useState<HomeworkSubmission[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedHomeworkId, setSelectedHomeworkId] = useState<string | null>(null);
+  const [content, setContent] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  // Mentor scoring modal
+  const [scoreModalOpen, setScoreModalOpen] = useState(false);
+  const [scoringSubmission, setScoringSubmission] = useState<HomeworkSubmission | null>(null);
+  const [scoreValue, setScoreValue] = useState('');
+  const [feedbackValue, setFeedbackValue] = useState('');
+  const [scoring, setScoring] = useState(false);
+
+  // Mentor view filter
+  const [mentorView, setMentorView] = useState<'byHomework' | 'byStudent'>('byHomework');
+
+  const fetchSubmissions = useCallback(async () => {
+    setLoading(true);
+    try {
+      const url = isMentor
+        ? '/api/homework/list'
+        : `/api/homework/list?userId=${encodeURIComponent(user.user_id)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.ok && data.data) {
+        setSubmissions(data.data);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  }, [isMentor, user.user_id]);
+
+  useEffect(() => {
+    fetchSubmissions();
+  }, [fetchSubmissions]);
+
+  const openSubmit = (hwId: string, existing?: HomeworkSubmission) => {
+    setSelectedHomeworkId(hwId);
+    setContent(existing ? existing.content : '');
+    setModalOpen(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedHomeworkId || !content.trim()) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/homework/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.user_id,
+          userName: user.name,
+          role: user.role,
+          homeworkId: selectedHomeworkId,
+          content: content.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setModalOpen(false);
+        await fetchSubmissions();
+      } else {
+        alert(data.error || '提交失败');
+      }
+    } catch {
+      alert('网络错误，请重试');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const openScore = (sub: HomeworkSubmission) => {
+    setScoringSubmission(sub);
+    setScoreValue(sub.score !== undefined ? String(sub.score) : '');
+    setFeedbackValue(sub.feedback || '');
+    setScoreModalOpen(true);
+  };
+
+  const handleScore = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!scoringSubmission) return;
+    setScoring(true);
+    try {
+      const res = await fetch('/api/homework/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          scorerId: user.user_id,
+          scorerName: user.name,
+          role: user.role,
+          submissionId: scoringSubmission.id,
+          score: Number(scoreValue),
+          feedback: feedbackValue,
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setScoreModalOpen(false);
+        await fetchSubmissions();
+      } else {
+        alert(data.error || '评分失败');
+      }
+    } catch {
+      alert('网络错误，请重试');
+    } finally {
+      setScoring(false);
+    }
+  };
+
+  const getSubmission = (hwId: string) => submissions.find((s) => s.homeworkId === hwId);
+
+  // Student view
+  if (!isMentor) {
+    const grouped = homeworkData.reduce<Record<string, typeof homeworkData>>((acc, hw) => {
+      if (!acc[hw.phase]) acc[hw.phase] = [];
+      acc[hw.phase].push(hw);
+      return acc;
+    }, {});
+
+    return (
+      <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">作业提交</h2>
+          <p className="text-slate-500 mb-6">请按阶段完成并提交作业，导师批改后可在此查看评分和评语。</p>
+
+          {loading && submissions.length === 0 && (
+            <div className="text-center py-12">
+              <svg className="animate-spin h-6 w-6 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <p className="text-sm text-slate-500 mt-2">加载中...</p>
+            </div>
+          )}
+
+          <div className="space-y-6">
+            {Object.entries(grouped).map(([phase, items]) => (
+              <div key={phase} className="bg-white rounded-xl border border-slate-200 p-5">
+                <h3 className="text-sm font-semibold text-slate-500 uppercase tracking-wider mb-4">{phase}</h3>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {items.map((hw) => {
+                    const sub = getSubmission(hw.id);
+                    const status = sub?.score !== undefined ? 'scored' : sub ? 'submitted' : 'pending';
+                    return (
+                      <div key={hw.id} className="rounded-lg border border-slate-100 p-4 hover:border-blue-200 transition-colors">
+                        <div className="flex items-start justify-between mb-2">
+                          <h4 className="font-medium text-slate-900">{hw.title}</h4>
+                          {status === 'pending' && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">未提交</span>
+                          )}
+                          {status === 'submitted' && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">已提交，待批改</span>
+                          )}
+                          {status === 'scored' && sub && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 text-green-700">已评分 {sub.score} 分</span>
+                          )}
+                        </div>
+                        {sub && (
+                          <div className="text-xs text-slate-500 mb-3">
+                            提交时间：{new Date(sub.createdAt).toLocaleString('zh-CN')}
+                          </div>
+                        )}
+                        {sub?.score !== undefined && (
+                          <div className="bg-slate-50 rounded-md p-3 mb-3 text-sm">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="font-medium text-slate-900">评分：{sub.score} 分</span>
+                              <span className="text-xs text-slate-400">by {sub.scoredBy}</span>
+                            </div>
+                            {sub.feedback && <p className="text-slate-600">评语：{sub.feedback}</p>}
+                          </div>
+                        )}
+                        <button
+                          onClick={() => openSubmit(hw.id, sub)}
+                          className="text-sm px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                        >
+                          {sub ? '重新编辑' : '去提交'}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {modalOpen && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-xl w-full max-w-lg p-6 shadow-xl">
+              <h3 className="text-lg font-semibold text-slate-900 mb-4">
+                提交作业：{homeworkData.find((h) => h.id === selectedHomeworkId)?.title}
+              </h3>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <textarea
+                  value={content}
+                  onChange={(e) => setContent(e.target.value)}
+                  placeholder="在此输入作业内容..."
+                  rows={8}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
+                  required
+                />
+                <div className="flex items-center justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setModalOpen(false)}
+                    className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                  >
+                    取消
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors"
+                  >
+                    {submitting ? '提交中...' : '提交'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // Mentor / Admin view
+  const uniqueStudents = Array.from(new Map(submissions.map((s) => [s.userId, s])).values());
+
+  return (
+    <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-1">作业批改</h2>
+            <p className="text-slate-500">查看学员提交的作业并进行评分。</p>
+          </div>
+          <div className="flex items-center gap-2 bg-white border border-slate-200 rounded-lg p-1">
+            <button
+              onClick={() => setMentorView('byHomework')}
+              className={`px-3 py-1.5 text-sm rounded-md transition-colors ${mentorView === 'byHomework' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-100'}`}
+            >
+              按作业查看
+            </button>
+            <button
+              onClick={() => setMentorView('byStudent')}
+              className={`px-3 py-1.5 text-sm rounded-md transition-colors ${mentorView === 'byStudent' ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-100'}`}
+            >
+              按学员查看
+            </button>
+          </div>
+        </div>
+
+        {loading && submissions.length === 0 && (
+          <div className="text-center py-12">
+            <svg className="animate-spin h-6 w-6 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p className="text-sm text-slate-500 mt-2">加载中...</p>
+          </div>
+        )}
+
+        {mentorView === 'byHomework' && (
+          <div className="space-y-6">
+            {homeworkData.map((hw) => {
+              const hwSubs = submissions.filter((s) => s.homeworkId === hw.id);
+              return (
+                <div key={hw.id} className="bg-white rounded-xl border border-slate-200 p-5">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold text-slate-900">{hw.title}</h3>
+                    <span className="text-xs text-slate-500">{hw.phase} · 已提交 {hwSubs.length} 份</span>
+                  </div>
+                  {hwSubs.length === 0 ? (
+                    <p className="text-sm text-slate-400">暂无学员提交</p>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-left text-slate-500 border-b border-slate-100">
+                            <th className="pb-2 font-medium">学员</th>
+                            <th className="pb-2 font-medium">提交时间</th>
+                            <th className="pb-2 font-medium">内容摘要</th>
+                            <th className="pb-2 font-medium">评分</th>
+                            <th className="pb-2 font-medium text-right">操作</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {hwSubs.map((sub) => (
+                            <tr key={sub.id} className="border-b border-slate-50 last:border-0">
+                              <td className="py-3 text-slate-900">{sub.userName}</td>
+                              <td className="py-3 text-slate-500">{new Date(sub.createdAt).toLocaleString('zh-CN')}</td>
+                              <td className="py-3 text-slate-500 max-w-xs truncate">{sub.content}</td>
+                              <td className="py-3">
+                                {sub.score !== undefined ? (
+                                  <span className="text-green-700 font-medium">{sub.score} 分</span>
+                                ) : (
+                                  <span className="text-slate-400">-</span>
+                                )}
+                              </td>
+                              <td className="py-3 text-right">
+                                <button
+                                  onClick={() => openScore(sub)}
+                                  className="text-sm px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                >
+                                  {sub.score !== undefined ? '修改评分' : '评分'}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {mentorView === 'byStudent' && (
+          <div className="space-y-6">
+            {uniqueStudents.length === 0 ? (
+              <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
+                <p className="text-slate-400 text-sm">暂无学员提交记录</p>
+              </div>
+            ) : (
+              uniqueStudents.map((student) => {
+                const studentSubs = submissions.filter((s) => s.userId === student.userId);
+                return (
+                  <div key={student.userId} className="bg-white rounded-xl border border-slate-200 p-5">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="font-semibold text-slate-900">{student.userName}</h3>
+                      <span className="text-xs text-slate-500">已提交 {studentSubs.length} 份作业</span>
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="text-left text-slate-500 border-b border-slate-100">
+                            <th className="pb-2 font-medium">作业名称</th>
+                            <th className="pb-2 font-medium">提交时间</th>
+                            <th className="pb-2 font-medium">评分</th>
+                            <th className="pb-2 font-medium text-right">操作</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {studentSubs.map((sub) => (
+                            <tr key={sub.id} className="border-b border-slate-50 last:border-0">
+                              <td className="py-3 text-slate-900">
+                                {homeworkData.find((h) => h.id === sub.homeworkId)?.title || sub.homeworkId}
+                              </td>
+                              <td className="py-3 text-slate-500">{new Date(sub.createdAt).toLocaleString('zh-CN')}</td>
+                              <td className="py-3">
+                                {sub.score !== undefined ? (
+                                  <span className="text-green-700 font-medium">{sub.score} 分</span>
+                                ) : (
+                                  <span className="text-slate-400">待批改</span>
+                                )}
+                              </td>
+                              <td className="py-3 text-right">
+                                <button
+                                  onClick={() => openScore(sub)}
+                                  className="text-sm px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                                >
+                                  {sub.score !== undefined ? '修改评分' : '评分'}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        )}
+      </div>
+
+      {scoreModalOpen && scoringSubmission && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-lg p-6 shadow-xl">
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+              批改作业：{homeworkData.find((h) => h.id === scoringSubmission.homeworkId)?.title}
+            </h3>
+            <p className="text-sm text-slate-500 mb-4">学员：{scoringSubmission.userName}</p>
+            <div className="bg-slate-50 rounded-lg p-3 mb-4 max-h-40 overflow-y-auto text-sm text-slate-700">
+              <p className="whitespace-pre-wrap">{scoringSubmission.content}</p>
+            </div>
+            <form onSubmit={handleScore} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">评分（0-100）</label>
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={scoreValue}
+                  onChange={(e) => setScoreValue(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">评语</label>
+                <textarea
+                  value={feedbackValue}
+                  onChange={(e) => setFeedbackValue(e.target.value)}
+                  placeholder="输入评语..."
+                  rows={4}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
+                />
+              </div>
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setScoreModalOpen(false)}
+                  className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  取消
+                </button>
+                <button
+                  type="submit"
+                  disabled={scoring}
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors"
+                >
+                  {scoring ? '保存中...' : '保存评分'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -548,6 +1003,7 @@ export default function LearnPage() {
   const tabs: { key: TabKey; label: string }[] = [
     { key: 'learn', label: '学习' },
     { key: 'exam', label: '考试' },
+    { key: 'homework', label: '作业' },
     { key: 'reflection', label: '学习心得' },
     { key: 'faq', label: 'FAQ' },
   ];
@@ -803,6 +1259,7 @@ export default function LearnPage() {
         )}
 
         {activeTab === 'exam' && <ExamPanel />}
+        {activeTab === 'homework' && user && <HomeworkPanel user={user} />}
         {activeTab === 'reflection' && <ReflectionPanel userName={user.name} />}
         {activeTab === 'faq' && <FAQPanel />}
       </div>

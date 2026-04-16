@@ -312,6 +312,24 @@ export const courseData: Section[] = [
   },
 ];
 
+export interface Homework {
+  id: string;
+  title: string;
+  phase: string;
+  description?: string;
+}
+
+export const homeworkData: Homework[] = [
+  { id: 'search-hw1', title: '搜索广告方案', phase: '搜索广告及应用' },
+  { id: 'search-hw2', title: '搜索广告出价策略', phase: '搜索广告及应用' },
+  { id: 'search-hw3', title: '创建搜索广告', phase: '搜索广告及应用' },
+  { id: 'search-hw4', title: '搜索广告优化', phase: '搜索广告及应用' },
+  { id: 'shopping-hw1', title: '购物广告 feed 制作', phase: '购物广告及应用' },
+  { id: 'shopping-hw2', title: '购物广告优化', phase: '购物广告及应用' },
+  { id: 'pmax-hw1', title: 'PLA 与 Pmax 综合测试', phase: 'Pmax 广告及应用' },
+  { id: 'demand-hw1', title: 'Demand Gen 综合测试', phase: 'Demand Gen 广告及应用' },
+];
+
 export const flatLessons: Lesson[] = courseData.reduce<Lesson[]>((acc, section) => {
   section.lessons.forEach((lesson) => {
     acc.push(lesson);
