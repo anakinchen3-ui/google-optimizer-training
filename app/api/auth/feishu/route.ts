@@ -8,6 +8,7 @@ const APP_SECRET = 'u9yUFAb1iMdQqQ6IugXv8fmrp2ERz8m7';
 // Hardcoded fallback role mapping (user_id -> role)
 const FALLBACK_ROLE_MAP: Record<string, 'admin' | 'mentor' | 'student'> = {
   'ou_22dcf59d9895159de15367a680387aed': 'admin',
+  'defe83g4': 'admin',
 };
 
 const KV_KEY = 'user:roles';
