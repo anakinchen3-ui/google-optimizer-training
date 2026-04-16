@@ -8,7 +8,7 @@ const USER_KEY = 'google-learn-user-v1';
 
 const APP_ID = 'cli_a954b3694f381cb0';
 // 部署到 Vercel 后，在 Environment Variables 里设置 NEXT_PUBLIC_REDIRECT_URI
-const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI || 'https://your-domain.vercel.app/learn';
+const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI || 'https://google-optimizer-training.vercel.app/learn';
 
 export type UserRole = 'admin' | 'mentor' | 'student';
 
