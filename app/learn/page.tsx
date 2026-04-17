@@ -35,7 +35,7 @@ interface HomeworkSubmission {
   scoredAt?: string;
 }
 
-type TabKey = 'learn' | 'exam' | 'homework' | 'reflection' | 'faq' | 'users';
+type TabKey = 'learn' | 'exam' | 'homework' | 'reflection' | 'faq' | 'users' | 'assessment';
 
 function getIconByType(type: LessonType) {
   switch (type) {
@@ -145,7 +145,32 @@ function LoginScreen() {
 }
 
 function ExamPanel() {
-  const examLinks = [
+  return (
+    <div className="flex-1 overflow-y-auto p-8 bg-slate-50">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">考试</h2>
+        <p className="text-slate-500 mb-8">阶段性理论知识考试将在此发布。</p>
+
+        <div className="text-center py-16 bg-white rounded-xl border border-slate-200">
+          <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="16" y1="13" x2="8" y2="13" />
+              <line x1="16" y1="17" x2="8" y2="17" />
+              <polyline points="10 9 9 9 8 9" />
+            </svg>
+          </div>
+          <h3 className="text-lg font-semibold text-slate-900 mb-1">暂无考试内容</h3>
+          <p className="text-sm text-slate-500">请留意后续发布的阶段性考试通知。</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AssessmentPanel() {
+  const assessmentLinks = [
     {
       id: 'assess-1',
       title: '阶段性考核',
@@ -163,11 +188,11 @@ function ExamPanel() {
   return (
     <div className="flex-1 overflow-y-auto p-8 bg-slate-50">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">考试与考核</h2>
+        <h2 className="text-2xl font-bold text-slate-900 mb-2">考核</h2>
         <p className="text-slate-500 mb-8">请按需进入对应考核页面，完成阶段性评估或转正考核。</p>
 
         <div className="grid gap-6 md:grid-cols-2">
-          {examLinks.map((item) => (
+          {assessmentLinks.map((item) => (
             <a
               key={item.id}
               href={item.url}
@@ -209,7 +234,7 @@ function ExamPanel() {
               <ul className="text-sm text-amber-800 list-disc list-inside space-y-1">
                 <li>考核内容以飞书文档形式发布，点击卡片即可打开。</li>
                 <li>请确保在截止日期前完成并提交。</li>
-                <li>如有疑问，请联系导师或管理员。</li>
+                <li>如有疑问，请联系管理员。</li>
               </ul>
             </div>
           </div>
@@ -985,7 +1010,7 @@ const faqData = [
   },
   {
     q: '如何参加考试和考核？',
-    a: '切换到顶部「考试」板块，即可查看阶段性考核和转正考核的入口。',
+    a: '学员可切换到顶部「考试」板块参加考试；考核入口仅对导师和管理员可见。',
   },
   {
     q: '登录时提示「没有权限」怎么办？',
@@ -1183,12 +1208,14 @@ export default function LearnPage() {
     );
   }
 
+  const isMentorOrAdmin = user.role === 'mentor' || user.role === 'admin';
   const tabs: { key: TabKey; label: string }[] = [
     { key: 'learn', label: '学习' },
     { key: 'exam', label: '考试' },
     { key: 'homework', label: '作业' },
     { key: 'reflection', label: '学习心得' },
     { key: 'faq', label: 'FAQ' },
+    ...(isMentorOrAdmin ? [{ key: 'assessment' as TabKey, label: '考核' }] : []),
     ...(user.role === 'admin' ? [{ key: 'users' as TabKey, label: '用户管理' }] : []),
   ];
 
@@ -1444,6 +1471,7 @@ export default function LearnPage() {
 
         {activeTab === 'exam' && <ExamPanel />}
         {activeTab === 'homework' && user && <HomeworkPanel user={user} />}
+        {activeTab === 'assessment' && isMentorOrAdmin && <AssessmentPanel />}
         {activeTab === 'users' && user && user.role === 'admin' && <UserManagementPanel user={user} />}
         {activeTab === 'reflection' && <ReflectionPanel userName={user.name} />}
         {activeTab === 'faq' && <FAQPanel />}
