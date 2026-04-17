@@ -316,6 +316,16 @@ function TrainingSchedulePanel({ user }: { user: User }) {
     }
   };
 
+  const groups = schedule.reduce<{ title: string; rows: { row: TrainingScheduleItem; index: number }[] }[]>((acc, row, idx) => {
+    if (row.时间 && row.时间.trim()) {
+      acc.push({ title: row.时间, rows: [] });
+    }
+    if (acc.length > 0) {
+      acc[acc.length - 1].rows.push({ row, index: idx });
+    }
+    return acc;
+  }, []);
+
   return (
     <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50">
       <div className="max-w-7xl mx-auto">
@@ -336,48 +346,51 @@ function TrainingSchedulePanel({ user }: { user: User }) {
         )}
 
         {!loading && schedule.length > 0 && (
-          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-slate-50">
-                  <tr className="text-left text-slate-600 border-b border-slate-200">
-                    <th className="px-4 py-3 font-medium whitespace-nowrap">时间</th>
-                    <th className="px-4 py-3 font-medium whitespace-nowrap">学习时间/天</th>
-                    <th className="px-4 py-3 font-medium whitespace-nowrap">内容板块</th>
-                    <th className="px-4 py-3 font-medium whitespace-nowrap min-w-[200px]">学习内容</th>
-                    <th className="px-4 py-3 font-medium whitespace-nowrap min-w-[200px]">学习要求</th>
-                    <th className="px-4 py-3 font-medium whitespace-nowrap">培训类型</th>
-                    <th className="px-4 py-3 font-medium whitespace-nowrap">培训负责人</th>
-                    <th className="px-4 py-3 font-medium whitespace-nowrap">计划培训时间</th>
-                    {isAdmin && <th className="px-4 py-3 font-medium whitespace-nowrap text-right">操作</th>}
-                  </tr>
-                </thead>
-                <tbody>
-                  {schedule.map((row, idx) => (
-                    <tr key={idx} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
-                      <td className="px-4 py-3 text-slate-900 whitespace-nowrap">{row.时间}</td>
-                      <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row['学习时间/天']}</td>
-                      <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.内容板块}</td>
-                      <td className="px-4 py-3 text-slate-700 min-w-[200px]">{row.学习内容}</td>
-                      <td className="px-4 py-3 text-slate-600 min-w-[200px] whitespace-pre-wrap">{row.学习要求}</td>
-                      <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.培训类型}</td>
-                      <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{row.培训负责人}</td>
-                      <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{row.计划培训时间}</td>
-                      {isAdmin && (
-                        <td className="px-4 py-3 text-right whitespace-nowrap">
-                          <button
-                            onClick={() => openEdit(idx)}
-                            className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                          >
-                            编辑
-                          </button>
-                        </td>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="space-y-6">
+            {groups.map((group, gIdx) => (
+              <div key={gIdx} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                <div className="px-4 py-3 bg-blue-50 border-b border-blue-100">
+                  <h3 className="font-semibold text-blue-900">{group.title}</h3>
+                </div>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-slate-50">
+                      <tr className="text-left text-slate-600 border-b border-slate-200">
+                        <th className="px-4 py-3 font-medium whitespace-nowrap">内容板块</th>
+                        <th className="px-4 py-3 font-medium whitespace-nowrap min-w-[200px]">学习内容</th>
+                        <th className="px-4 py-3 font-medium whitespace-nowrap min-w-[200px]">学习要求</th>
+                        <th className="px-4 py-3 font-medium whitespace-nowrap">培训类型</th>
+                        <th className="px-4 py-3 font-medium whitespace-nowrap">培训负责人</th>
+                        <th className="px-4 py-3 font-medium whitespace-nowrap">计划培训时间</th>
+                        {isAdmin && <th className="px-4 py-3 font-medium whitespace-nowrap text-right">操作</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {group.rows.map(({ row, index }) => (
+                        <tr key={index} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
+                          <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.内容板块}</td>
+                          <td className="px-4 py-3 text-slate-700 min-w-[200px]">{row.学习内容}</td>
+                          <td className="px-4 py-3 text-slate-600 min-w-[200px] whitespace-pre-wrap">{row.学习要求}</td>
+                          <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.培训类型}</td>
+                          <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{row.培训负责人}</td>
+                          <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{row.计划培训时间}</td>
+                          {isAdmin && (
+                            <td className="px-4 py-3 text-right whitespace-nowrap">
+                              <button
+                                onClick={() => openEdit(index)}
+                                className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                              >
+                                编辑
+                              </button>
+                            </td>
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </div>
