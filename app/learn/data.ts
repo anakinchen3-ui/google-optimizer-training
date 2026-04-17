@@ -1,4 +1,5 @@
 export type LessonType = 'docx' | 'sheet' | 'slides' | 'folder';
+export type RenderAs = 'markdown' | 'html' | 'image' | 'iframe';
 
 export interface Lesson {
   id: string;
@@ -7,6 +8,7 @@ export interface Lesson {
   url: string;
   isHomework?: boolean;
   children?: Lesson[];
+  renderAs?: RenderAs;
 }
 
 export interface Section {
@@ -24,7 +26,8 @@ export const courseData: Section[] = [
         id: 'foundation-1',
         title: '一、了解数字营销与品牌独立站',
         type: 'docx',
-        url: 'https://pwl28kvg7c4.feishu.cn/docx/EXMUdQtUwodccQxDqjWcb8FXnJf',
+        url: '/content/foundation/foundation-1.md',
+        renderAs: 'markdown',
       },
       {
         id: 'foundation-2',
@@ -276,13 +279,15 @@ export const courseData: Section[] = [
         id: 'extra-2',
         title: 'google 分享内容安排',
         type: 'sheet',
-        url: 'https://pwl28kvg7c4.feishu.cn/sheets/YTGmsSjfYhQyFrtTyWLcy6DRnmb',
+        url: '/content/extra/extra-2.png',
+        renderAs: 'image',
       },
       {
         id: 'extra-3',
         title: '2025 网站布局培训',
         type: 'slides',
-        url: 'https://pwl28kvg7c4.feishu.cn/slides/CMFosEFuwlsuLed3VsjcfxJ2nue',
+        url: '/content/extra/extra-3.png',
+        renderAs: 'image',
       },
       {
         id: 'extra-4',

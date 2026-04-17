@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { marked } from 'marked';
 import { courseData, homeworkData, type Lesson, type LessonType, getLessonById, getFirstLesson } from './data';
 
 const STORAGE_KEY = 'google-learn-progress-v1';
@@ -1272,6 +1273,74 @@ function FAQPanel() {
   );
 }
 
+function ContentRenderer({ lesson }: { lesson: Lesson }) {
+  const [content, setContent] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (lesson.renderAs === 'markdown' || lesson.renderAs === 'html') {
+      setLoading(true);
+      fetch(lesson.url)
+        .then((r) => r.text())
+        .then((text) => {
+          const html = lesson.renderAs === 'markdown' ? (marked.parse(text, { async: false }) as string) : text;
+          setContent(html);
+        })
+        .catch(() => {
+          setContent('<p class="text-red-600">内容加载失败，请检查文件是否存在。</p>');
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [lesson.url, lesson.renderAs]);
+
+  if (lesson.renderAs === 'image') {
+    return (
+      <div className="flex-1 overflow-auto p-6 bg-slate-50 flex items-start justify-center">
+        <img
+          src={lesson.url}
+          alt={lesson.title}
+          className="max-w-full shadow-lg rounded-lg border border-slate-200"
+        />
+      </div>
+    );
+  }
+
+  if (lesson.renderAs === 'markdown' || lesson.renderAs === 'html') {
+    if (loading) {
+      return (
+        <div className="flex-1 flex items-center justify-center bg-slate-50">
+          <svg className="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+      );
+    }
+    return (
+      <div className="flex-1 overflow-auto bg-white p-8">
+        <div
+          className="max-w-4xl mx-auto text-slate-800 leading-relaxed"
+          style={{
+            lineHeight: 1.75,
+          }}
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      </div>
+    );
+  }
+
+  // Default: iframe (compatible with existing Feishu embeds)
+  return (
+    <iframe
+      src={lesson.url}
+      className="flex-1 w-full border-0"
+      sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-downloads"
+      allow="fullscreen"
+      title={lesson.title}
+    />
+  );
+}
+
 export default function LearnPage() {
   const [activeTab, setActiveTab] = useState<TabKey>('learn');
 
@@ -1638,27 +1707,23 @@ export default function LearnPage() {
                         {getIconByType(activeLesson.type)}
                         <span className="font-medium text-slate-900">{activeLesson.title}</span>
                       </div>
-                      <a
-                        href={activeLesson.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-slate-500 hover:text-blue-600 flex items-center gap-1"
-                      >
-                        在飞书中打开
-                        <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                          <polyline points="15 3 21 3 21 9" />
-                          <line x1="10" y1="14" x2="21" y2="3" />
-                        </svg>
-                      </a>
+                      {(activeLesson.renderAs === 'iframe' || !activeLesson.renderAs) && (
+                        <a
+                          href={activeLesson.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-slate-500 hover:text-blue-600 flex items-center gap-1"
+                        >
+                          在飞书中打开
+                          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                            <polyline points="15 3 21 3 21 9" />
+                            <line x1="10" y1="14" x2="21" y2="3" />
+                          </svg>
+                        </a>
+                      )}
                     </div>
-                    <iframe
-                      src={activeLesson.url}
-                      className="flex-1 w-full border-0"
-                      sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-downloads"
-                      allow="fullscreen"
-                      title={activeLesson.title}
-                    />
+                    <ContentRenderer lesson={activeLesson} />
                   </div>
                 )
               ) : (
