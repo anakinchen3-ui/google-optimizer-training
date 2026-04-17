@@ -663,6 +663,7 @@ function HomeworkPanel({ user }: { user: User }) {
 
 function UserManagementPanel({ user }: { user: User }) {
   const [roles, setRoles] = useState<Record<string, 'admin' | 'mentor' | 'student'>>({});
+  const [profiles, setProfiles] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [userIdInput, setUserIdInput] = useState('');
   const [roleInput, setRoleInput] = useState<'mentor' | 'admin' | 'student'>('mentor');
@@ -674,7 +675,8 @@ function UserManagementPanel({ user }: { user: User }) {
       const res = await fetch(`/api/users/roles?requesterRole=${user.role}`);
       const data = await res.json();
       if (data.ok && data.data) {
-        setRoles(data.data);
+        setRoles(data.data.roles || {});
+        setProfiles(data.data.profiles || {});
       }
     } catch {
       // ignore
@@ -743,6 +745,19 @@ function UserManagementPanel({ user }: { user: User }) {
         <h2 className="text-2xl font-bold text-slate-900 mb-2">用户权限管理</h2>
         <p className="text-slate-500 mb-6">为其他飞书用户分配导师或管理员角色。需要知道对方的飞书 user_id。</p>
 
+        <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6">
+          <h4 className="text-sm font-semibold text-blue-900 mb-2">如何获取对方的 user_id？</h4>
+          <ol className="text-sm text-blue-800 list-decimal list-inside space-y-1">
+            <li>让对方用飞书扫码登录本系统</li>
+            <li>在页面空白处右键 → 选择「检查」（或按 Cmd + Option + I）</li>
+            <li>切换到 Console 标签，粘贴并执行以下命令：</li>
+          </ol>
+          <div className="mt-2 bg-white rounded-md border border-blue-200 px-3 py-2 font-mono text-xs text-slate-700 select-all">
+            JSON.parse(localStorage.getItem(&apos;google-learn-user-v1&apos;)).user_id
+          </div>
+          <p className="text-xs text-blue-700 mt-2">复制输出的字符串（如 ou_xxx 或类似格式）即可用于授权。</p>
+        </div>
+
         <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
           <h3 className="font-semibold text-slate-900 mb-4">添加/修改权限</h3>
           <form onSubmit={handleSave} className="flex flex-col md:flex-row gap-3">
@@ -793,6 +808,7 @@ function UserManagementPanel({ user }: { user: User }) {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-left text-slate-500 border-b border-slate-100">
+                    <th className="pb-2 font-medium">姓名</th>
                     <th className="pb-2 font-medium">飞书 user_id</th>
                     <th className="pb-2 font-medium">角色</th>
                     <th className="pb-2 font-medium text-right">操作</th>
@@ -801,7 +817,8 @@ function UserManagementPanel({ user }: { user: User }) {
                 <tbody>
                   {Object.entries(roles).map(([uid, r]) => (
                     <tr key={uid} className="border-b border-slate-50 last:border-0">
-                      <td className="py-3 text-slate-900 font-mono text-xs">{uid}</td>
+                      <td className="py-3 text-slate-900 font-medium">{profiles[uid] || '未知用户'}</td>
+                      <td className="py-3 text-slate-600 font-mono text-xs">{uid}</td>
                       <td className="py-3">
                         <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${getRoleBadgeColor(r)}`}>
                           {getRoleLabel(r)}

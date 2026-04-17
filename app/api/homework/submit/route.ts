@@ -3,6 +3,7 @@ export const runtime = 'edge';
 import { kv } from '@vercel/kv';
 
 const KV_KEY = 'homework:submissions';
+const PROFILE_KEY = 'user:profiles';
 
 export interface HomeworkSubmission {
   id: string;
@@ -63,6 +64,11 @@ export async function POST(request: Request) {
     }
 
     await kv.set(KV_KEY, submissions);
+
+    // Save user profile mapping for admin panel
+    const profiles: Record<string, string> = (await kv.get(PROFILE_KEY)) || {};
+    profiles[userId] = userName;
+    await kv.set(PROFILE_KEY, profiles);
 
     return Response.json({ ok: true });
   } catch (err: unknown) {

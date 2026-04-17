@@ -3,6 +3,7 @@ export const runtime = 'edge';
 import { kv } from '@vercel/kv';
 
 const KV_KEY = 'user:roles';
+const PROFILE_KEY = 'user:profiles';
 
 export async function GET(request: Request) {
   try {
@@ -14,7 +15,8 @@ export async function GET(request: Request) {
     }
 
     const roles: Record<string, 'admin' | 'mentor' | 'student'> = (await kv.get(KV_KEY)) || {};
-    return Response.json({ ok: true, data: roles });
+    const profiles: Record<string, string> = (await kv.get(PROFILE_KEY)) || {};
+    return Response.json({ ok: true, data: { roles, profiles } });
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     return Response.json({ ok: false, error: message }, { status: 500 });

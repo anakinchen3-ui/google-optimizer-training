@@ -12,6 +12,7 @@ const FALLBACK_ROLE_MAP: Record<string, 'admin' | 'mentor' | 'student'> = {
 };
 
 const KV_KEY = 'user:roles';
+const PROFILE_KEY = 'user:profiles';
 
 export async function POST(request: Request) {
   try {
@@ -98,6 +99,11 @@ export async function POST(request: Request) {
 
     const kvRoles: Record<string, 'admin' | 'mentor' | 'student'> = (await kv.get(KV_KEY)) || {};
     const role = kvRoles[userId] ?? FALLBACK_ROLE_MAP[userId] ?? 'student';
+
+    // Save user profile mapping for display in admin panel
+    const profiles: Record<string, string> = (await kv.get(PROFILE_KEY)) || {};
+    profiles[userId] = user.name;
+    await kv.set(PROFILE_KEY, profiles);
 
     return Response.json({
       ok: true,
