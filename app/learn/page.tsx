@@ -35,7 +35,7 @@ interface HomeworkSubmission {
   scoredAt?: string;
 }
 
-type TabKey = 'learn' | 'exam' | 'homework' | 'reflection' | 'faq' | 'users' | 'assessment';
+type TabKey = 'learn' | 'exam' | 'homework' | 'reflection' | 'faq' | 'users' | 'assessment' | 'schedule';
 
 function getIconByType(type: LessonType) {
   switch (type) {
@@ -240,6 +240,200 @@ function AssessmentPanel() {
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+interface TrainingScheduleItem {
+  时间: string;
+  '学习时间/天': string;
+  内容板块: string;
+  学习内容: string;
+  学习要求: string;
+  培训类型: string;
+  培训负责人: string;
+  计划培训时间: string;
+}
+
+function TrainingSchedulePanel({ user }: { user: User }) {
+  const isAdmin = user.role === 'admin';
+  const [schedule, setSchedule] = useState<TrainingScheduleItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editIndex, setEditIndex] = useState<number | null>(null);
+  const [editContent, setEditContent] = useState('');
+  const [editTime, setEditTime] = useState('');
+  const [editTrainer, setEditTrainer] = useState('');
+
+  useEffect(() => {
+    setLoading(true);
+    fetch('/api/training-schedule')
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.ok && data.data) setSchedule(data.data);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const openEdit = (idx: number) => {
+    const row = schedule[idx];
+    setEditIndex(idx);
+    setEditContent(row.学习内容);
+    setEditTime(row.计划培训时间);
+    setEditTrainer(row.培训负责人);
+    setModalOpen(true);
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (editIndex === null) return;
+    const updated = [...schedule];
+    updated[editIndex] = {
+      ...updated[editIndex],
+      学习内容: editContent,
+      计划培训时间: editTime,
+      培训负责人: editTrainer,
+    };
+    setSaving(true);
+    try {
+      const res = await fetch('/api/training-schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requesterRole: user.role, schedule: updated }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setSchedule(updated);
+        setModalOpen(false);
+      } else {
+        alert(data.error || '保存失败');
+      }
+    } catch {
+      alert('网络错误，请重试');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-1">培训时间</h2>
+            <p className="text-slate-500">查看培训安排及学习计划时间表。{isAdmin && '点击「编辑」可修改内容、培训时间和培训负责人。'}</p>
+          </div>
+        </div>
+
+        {loading && schedule.length === 0 && (
+          <div className="text-center py-12">
+            <svg className="animate-spin h-6 w-6 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+        )}
+
+        {!loading && schedule.length > 0 && (
+          <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead className="bg-slate-50">
+                  <tr className="text-left text-slate-600 border-b border-slate-200">
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">时间</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">学习时间/天</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">内容板块</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap min-w-[200px]">学习内容</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap min-w-[200px]">学习要求</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">培训类型</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">培训负责人</th>
+                    <th className="px-4 py-3 font-medium whitespace-nowrap">计划培训时间</th>
+                    {isAdmin && <th className="px-4 py-3 font-medium whitespace-nowrap text-right">操作</th>}
+                  </tr>
+                </thead>
+                <tbody>
+                  {schedule.map((row, idx) => (
+                    <tr key={idx} className="border-b border-slate-100 last:border-0 hover:bg-slate-50">
+                      <td className="px-4 py-3 text-slate-900 whitespace-nowrap">{row.时间}</td>
+                      <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row['学习时间/天']}</td>
+                      <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.内容板块}</td>
+                      <td className="px-4 py-3 text-slate-700 min-w-[200px]">{row.学习内容}</td>
+                      <td className="px-4 py-3 text-slate-600 min-w-[200px] whitespace-pre-wrap">{row.学习要求}</td>
+                      <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row.培训类型}</td>
+                      <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{row.培训负责人}</td>
+                      <td className="px-4 py-3 text-slate-700 whitespace-nowrap">{row.计划培训时间}</td>
+                      {isAdmin && (
+                        <td className="px-4 py-3 text-right whitespace-nowrap">
+                          <button
+                            onClick={() => openEdit(idx)}
+                            className="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                          >
+                            编辑
+                          </button>
+                        </td>
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {modalOpen && isAdmin && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-lg p-6 shadow-xl">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">编辑培训安排</h3>
+            <form onSubmit={handleSave} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">学习内容</label>
+                <textarea
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">计划培训时间</label>
+                <input
+                  type="text"
+                  value={editTime}
+                  onChange={(e) => setEditTime(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">培训负责人</label>
+                <input
+                  type="text"
+                  value={editTrainer}
+                  onChange={(e) => setEditTrainer(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                />
+              </div>
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => setModalOpen(false)}
+                  className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  取消
+                </button>
+                <button
+                  type="submit"
+                  disabled={saving}
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors"
+                >
+                  {saving ? '保存中...' : '保存'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1213,6 +1407,7 @@ export default function LearnPage() {
     { key: 'learn', label: '学习' },
     { key: 'exam', label: '考试' },
     { key: 'homework', label: '作业' },
+    { key: 'schedule', label: '培训时间' },
     { key: 'reflection', label: '学习心得' },
     { key: 'faq', label: 'FAQ' },
     ...(isMentorOrAdmin ? [{ key: 'assessment' as TabKey, label: '考核' }] : []),
@@ -1471,6 +1666,7 @@ export default function LearnPage() {
 
         {activeTab === 'exam' && <ExamPanel />}
         {activeTab === 'homework' && user && <HomeworkPanel user={user} />}
+        {activeTab === 'schedule' && user && <TrainingSchedulePanel user={user} />}
         {activeTab === 'assessment' && isMentorOrAdmin && <AssessmentPanel />}
         {activeTab === 'users' && user && user.role === 'admin' && <UserManagementPanel user={user} />}
         {activeTab === 'reflection' && <ReflectionPanel userName={user.name} />}
