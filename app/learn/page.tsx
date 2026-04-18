@@ -1283,7 +1283,22 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
       fetch(lesson.url)
         .then((r) => r.text())
         .then((text) => {
-          const html = lesson.renderAs === 'markdown' ? (marked.parse(text, { async: false }) as string) : text;
+          let html = lesson.renderAs === 'markdown' ? (marked.parse(text, { async: false }) as string) : text;
+
+          // Fix relative image paths to absolute paths based on markdown file location
+          if (lesson.renderAs === 'markdown') {
+            const basePath = lesson.url.substring(0, lesson.url.lastIndexOf('/') + 1);
+            html = html.replace(
+              /<img([^>]+)src="([^"]+)"([^>]*)>/g,
+              (match, before, src, after) => {
+                if (src.startsWith('http') || src.startsWith('/') || src.startsWith('data:')) {
+                  return match;
+                }
+                return `<img${before}src="${basePath}${src}"${after}>`;
+              }
+            );
+          }
+
           setContent(html);
         })
         .catch(() => {
@@ -1319,10 +1334,7 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
     return (
       <div className="flex-1 overflow-auto bg-white p-8">
         <div
-          className="max-w-4xl mx-auto text-slate-800 leading-relaxed"
-          style={{
-            lineHeight: 1.75,
-          }}
+          className="max-w-4xl mx-auto markdown-body"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>
