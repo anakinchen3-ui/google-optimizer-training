@@ -1336,7 +1336,7 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
     return <MindMap data={mindMapData} />;
   }
 
-  if ((lesson.id === 'foundation-4' || lesson.id === 'search-1') && mindMapLoading) {
+  if (lesson.id === 'foundation-4' && mindMapLoading) {
     return (
       <div className="flex-1 flex items-center justify-center bg-slate-50">
         <svg className="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -1370,19 +1370,31 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
         </div>
       );
     }
-    return (
-      <div className="flex-1 overflow-auto bg-white">
-        {lesson.id === 'search-1' && mindMapData && (
-          <div className="border-b border-slate-200">
-            <MindMap data={mindMapData} />
+    // Check for mindmap placeholder in content
+    const mindmapPlaceholder = '<!-- mindmap:search-1 -->';
+    const hasMindmapPlaceholder = content.includes(mindmapPlaceholder);
+
+    if (hasMindmapPlaceholder && mindMapData) {
+      const [before, after] = content.split(mindmapPlaceholder);
+      return (
+        <div className="flex-1 overflow-auto bg-white p-8">
+          <div className="max-w-4xl mx-auto markdown-body">
+            <div dangerouslySetInnerHTML={{ __html: before }} />
+            <div className="my-4 -mx-8">
+              <MindMap data={mindMapData} />
+            </div>
+            <div dangerouslySetInnerHTML={{ __html: after }} />
           </div>
-        )}
-        <div className="p-8">
-          <div
-            className="max-w-4xl mx-auto markdown-body"
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
         </div>
+      );
+    }
+
+    return (
+      <div className="flex-1 overflow-auto bg-white p-8">
+        <div
+          className="max-w-4xl mx-auto markdown-body"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
       </div>
     );
   }
