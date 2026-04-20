@@ -123,8 +123,8 @@ interface MindMapProps {
 export default function MindMap({ data }: MindMapProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedSet, setExpandedSet] = useState<Set<string>>(() => {
-    // 默认只展开根节点和一级分类节点（搜索广告、购物广告等）
-    return new Set(getIdsToDepth(data, 1));
+    // 默认只展开根节点，一级分类节点全部收起
+    return new Set(getIdsToDepth(data, 0));
   });
 
   const allIds = useMemo(() => new Set(collectAllIds(data)), [data]);
