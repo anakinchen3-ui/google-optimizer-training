@@ -10,7 +10,7 @@
 - **多样化广告形式**：覆盖文字、图片、视频、商品目录等多种形式。
 - **AI 智能优化**：自动出价、素材组合、跨渠道投放提升效率。
 
-#二、Google Ads包含哪些广告类型
+# 二、Google Ads包含哪些广告类型
 
 
 
@@ -20,7 +20,7 @@
 
 除以上广告类型外，还有本地广告和应用广告，但这两种不适用于独立站，不详细讲述
 
-#三、Google Ads展示在哪里？
+# 三、Google Ads展示在哪里？
 
 - Google ads能展示在包含Google Search、Google Shopping、Google Discovery、Youtube等在内的Google自有资源中
 - 此外，Google Ads还能覆盖超3500 万个网站和应用合作，进一步拓宽广告覆盖面，帮助广告主完成阶段目标
@@ -29,22 +29,22 @@
 
 
 
-    搜索广告 {align="center"}
+    搜索广告
   ![img](Z07tb4yeQoiWLMxeQ0rc47rxnNe.png)
 
 
 
-    购物广告 {align="center"}
+    购物广告
 
 ![img](BL0XbxDyuoW8upxKWslcUvlxndc.png)
 
 
 
-    视频广告 {align="center"}
+    视频广告
   ![img](T5rdb2Gguoe2kzxEmWUc0YGTnQh.png)
 
 
 
     
     
-    Demand Gen / Performance Max {align="center"}
+    Demand Gen / Performance Max

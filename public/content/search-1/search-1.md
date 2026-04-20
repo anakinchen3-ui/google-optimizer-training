@@ -26,10 +26,6 @@
 
 
 
-![whiteboard](A826wXtCQh6DjnbUYWKcSgQmnJb.jpg)
-
-
-
 ### 付费搜索广告与自然搜索之间的区别
 
 

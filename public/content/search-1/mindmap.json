@@ -1,0 +1,78 @@
+{
+  "id": "search-ads-operation",
+  "label": "搜索广告运作流程",
+  "children": [
+    {
+      "id": "user-search",
+      "label": "用户发起搜索",
+      "children": [
+        { "id": "input-keyword", "label": "用户输入关键词（如\"shoes\"）" },
+        { "id": "enter-system", "label": "进入 Google 搜索系统" }
+      ]
+    },
+    {
+      "id": "search-engine-process",
+      "label": "搜索引擎处理流程",
+      "children": [
+        {
+          "id": "crawl",
+          "label": "爬取",
+          "children": [{ "id": "crawl-detail", "label": "Googlebot 抓取全网网页内容" }]
+        },
+        {
+          "id": "index",
+          "label": "索引",
+          "children": [{ "id": "index-detail", "label": "建立关键词与网页的映射数据库" }]
+        },
+        {
+          "id": "rank",
+          "label": "排名",
+          "children": [
+            { "id": "rank-relevance", "label": "相关性（内容质量、反向链接等）" },
+            { "id": "rank-ux", "label": "用户体验（点击率、停留时间等）" },
+            { "id": "rank-result", "label": "排序结果" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ad-system-trigger",
+      "label": "广告系统触发",
+      "children": [
+        {
+          "id": "ad-auction",
+          "label": "广告拍卖",
+          "children": [
+            { "id": "bid-keyword", "label": "广告主竞价关键词（如\"运动鞋\"）" },
+            { "id": "quality-score", "label": "质量得分（广告相关性、点击率预期）× 出价" },
+            { "id": "winner", "label": "决定胜出广告" }
+          ]
+        },
+        {
+          "id": "ad-display",
+          "label": "广告展示",
+          "children": [
+            { "id": "top-position", "label": "胜出广告显示在搜索结果顶部（标注\"广告\"）" },
+            { "id": "cpm-cpc", "label": "按每次点击（CPC）或千次展示（CPM）计费" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frontend-display",
+      "label": "前端展示",
+      "children": [
+        { "id": "precision", "label": "依据广告精确定位系数与过往搜索数据积累" },
+        { "id": "display-result", "label": "呈现前端自然位与搜索广告位结果" }
+      ]
+    },
+    {
+      "id": "user-feedback",
+      "label": "用户行为反馈",
+      "children": [
+        { "id": "click", "label": "点击广告或自然结果" },
+        { "id": "data-feedback", "label": "数据反馈至算法优化后续排名/广告展示" }
+      ]
+    }
+  ]
+}

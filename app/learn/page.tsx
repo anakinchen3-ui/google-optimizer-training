@@ -1311,11 +1311,18 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
     }
   }, [lesson.url, lesson.renderAs]);
 
-  // Special mindmap view for foundation-4
+  // Special mindmap view for foundation-4 and search-1
   useEffect(() => {
     if (lesson.id === 'foundation-4') {
       setMindMapLoading(true);
       fetch('/content/foundation-4/mindmap.json')
+        .then((r) => r.json())
+        .then((data) => setMindMapData(data))
+        .catch(() => setMindMapData(null))
+        .finally(() => setMindMapLoading(false));
+    } else if (lesson.id === 'search-1') {
+      setMindMapLoading(true);
+      fetch('/content/search-1/mindmap.json')
         .then((r) => r.json())
         .then((data) => setMindMapData(data))
         .catch(() => setMindMapData(null))
@@ -1329,7 +1336,7 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
     return <MindMap data={mindMapData} />;
   }
 
-  if (lesson.id === 'foundation-4' && mindMapLoading) {
+  if ((lesson.id === 'foundation-4' || lesson.id === 'search-1') && mindMapLoading) {
     return (
       <div className="flex-1 flex items-center justify-center bg-slate-50">
         <svg className="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -1364,11 +1371,18 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
       );
     }
     return (
-      <div className="flex-1 overflow-auto bg-white p-8">
-        <div
-          className="max-w-4xl mx-auto markdown-body"
-          dangerouslySetInnerHTML={{ __html: content }}
-        />
+      <div className="flex-1 overflow-auto bg-white">
+        {lesson.id === 'search-1' && mindMapData && (
+          <div className="border-b border-slate-200">
+            <MindMap data={mindMapData} />
+          </div>
+        )}
+        <div className="p-8">
+          <div
+            className="max-w-4xl mx-auto markdown-body"
+            dangerouslySetInnerHTML={{ __html: content }}
+          />
+        </div>
       </div>
     );
   }
