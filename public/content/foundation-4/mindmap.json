@@ -1,0 +1,268 @@
+{
+  "id": "google-ads",
+  "label": "Google Ads",
+  "children": [
+    {
+      "id": "search-ads",
+      "label": "搜索广告",
+      "children": [
+        {
+          "id": "keywords",
+          "label": "关键字",
+          "children": [
+            {
+              "id": "keyword-types",
+              "label": "关键字分类",
+              "children": [
+                { "id": "brand", "label": "品牌词" },
+                { "id": "category", "label": "品类词" },
+                { "id": "long-tail", "label": "长尾词" },
+                { "id": "competitor", "label": "竞品词" },
+                { "id": "promo", "label": "促销词" }
+              ]
+            },
+            {
+              "id": "match-types",
+              "label": "匹配方式",
+              "children": [
+                { "id": "broad", "label": "广泛匹配" },
+                { "id": "phrase", "label": "词组匹配" },
+                { "id": "exact", "label": "完全匹配" },
+                { "id": "negative", "label": "否定关键字" }
+              ]
+            },
+            {
+              "id": "quality-score",
+              "label": "质量得分",
+              "children": [
+                { "id": "relevance", "label": "广告相关性" },
+                { "id": "ctr", "label": "预估点击率" },
+                { "id": "landing", "label": "着陆页体验" }
+              ]
+            },
+            {
+              "id": "bidding",
+              "label": "出价方式",
+              "children": [
+                {
+                  "id": "manual-bid",
+                  "label": "手动出价",
+                  "children": [{ "id": "cpc", "label": "CPC" }]
+                },
+                {
+                  "id": "auto-bid",
+                  "label": "自动出价",
+                  "children": [
+                    { "id": "t-roas", "label": "尽可能提高转化价值（Troas可选）" },
+                    { "id": "t-cpa", "label": "尽可能提高转化次数（TCPA可选）" }
+                  ]
+                },
+                { "id": "portfolio-bid", "label": "组合出价" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ad-copy",
+          "label": "广告语",
+          "children": [
+            {
+              "id": "headlines",
+              "label": "标题",
+              "children": [
+                { "id": "insert-keywords", "label": "插入关键字、倒计时、地理位置" },
+                { "id": "optimize-rotation", "label": "优化轮播" }
+              ]
+            },
+            {
+              "id": "descriptions",
+              "label": "描述",
+              "children": [{ "id": "keyword-match", "label": "关键字匹配度" }]
+            },
+            {
+              "id": "landing-page",
+              "label": "着陆页",
+              "children": [
+                { "id": "load-speed", "label": "加载速度" },
+                { "id": "text-match", "label": "文本内容匹配" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "audience-signals",
+          "label": "受众信号",
+          "children": [
+            { "id": "purchase-intent", "label": "购买意向类" },
+            { "id": "interest", "label": "兴趣相关类" }
+          ]
+        },
+        { "id": "search-optimization", "label": "搜索广告数据维度与优化" }
+      ]
+    },
+    {
+      "id": "shopping-ads",
+      "label": "购物广告",
+      "children": [
+        {
+          "id": "feed",
+          "label": "Feed",
+          "children": [
+            {
+              "id": "manual-feed",
+              "label": "手动扩展Feed",
+              "children": [
+                { "id": "increase-id", "label": "增加ID数" },
+                { "id": "promo-settings", "label": "促销设置" },
+                { "id": "supplemental-feed", "label": "补充Feed" }
+              ]
+            },
+            {
+              "id": "auto-feed",
+              "label": "自动抓取Feed",
+              "children": [{ "id": "connect", "label": "连接操作" }]
+            }
+          ]
+        },
+        {
+          "id": "shopping-title",
+          "label": "标题",
+          "children": [
+            { "id": "title-structure", "label": "标题组成" },
+            { "id": "title-expand", "label": "标题扩展方法" }
+          ]
+        },
+        {
+          "id": "shopping-image",
+          "label": "图片",
+          "children": [
+            { "id": "image-types", "label": "图片类型" },
+            { "id": "improve-ctr", "label": "提升点击率" },
+            { "id": "image-link", "label": "图片链接" }
+          ]
+        },
+        { "id": "shopping-optimization", "label": "购物广告数据维度与优化" }
+      ]
+    },
+    {
+      "id": "pmax-ads",
+      "label": "PMax广告",
+      "children": [
+        {
+          "id": "campaign-structure",
+          "label": "广告系列结构",
+          "children": [{ "id": "structure-goal", "label": "系列结构和目标" }]
+        },
+        {
+          "id": "feed-select",
+          "label": "Feed选择",
+          "children": [{ "id": "product-category", "label": "产品分类" }]
+        },
+        {
+          "id": "pmax-audience",
+          "label": "受众信号",
+          "children": [
+            { "id": "intent-audience", "label": "意向受众" },
+            { "id": "interest-audience", "label": "兴趣受众" },
+            { "id": "remarketing-audience", "label": "再营销受众" },
+            { "id": "custom-audience", "label": "自定义受众" }
+          ]
+        },
+        {
+          "id": "creative-content",
+          "label": "素材内容",
+          "children": [
+            {
+              "id": "product-images",
+              "label": "产品图片",
+              "children": [
+                { "id": "promo-image", "label": "促销图片" },
+                { "id": "always-on-image", "label": "常驻图片" }
+              ]
+            },
+            {
+              "id": "video-types",
+              "label": "视频类型",
+              "children": [
+                { "id": "brand-video", "label": "品牌视频" },
+                { "id": "koc-video", "label": "红人二创视频" },
+                { "id": "video-length", "label": "最佳建议视频长度" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "demand-gen",
+      "label": "Demand Gen 广告",
+      "children": [
+        {
+          "id": "demand-ad-types",
+          "label": "广告类型",
+          "children": [
+            { "id": "single-image", "label": "单图" },
+            { "id": "carousel", "label": "轮播" },
+            { "id": "video-ad", "label": "视频" }
+          ]
+        },
+        {
+          "id": "demand-creative",
+          "label": "素材内容",
+          "children": [{ "id": "size-requirements", "label": "尺寸要求及数量" }]
+        },
+        {
+          "id": "demand-video",
+          "label": "视频内容",
+          "children": [
+            { "id": "video-duration", "label": "视频时长" },
+            { "id": "content-elements", "label": "内容要素" }
+          ]
+        },
+        { "id": "audience-segmentation", "label": "受众分层" },
+        { "id": "campaign-goal", "label": "广告目标" }
+      ]
+    },
+    {
+      "id": "video-ads",
+      "label": "视频广告",
+      "children": [
+        { "id": "video-ad-types", "label": "广告类型" },
+        { "id": "video-ad-goals", "label": "广告目标" },
+        { "id": "video-content", "label": "视频内容" },
+        { "id": "video-audience", "label": "受众分层" }
+      ]
+    },
+    {
+      "id": "remarketing",
+      "label": "再营销广告",
+      "children": [
+        { "id": "audience-list", "label": "受众列表" },
+        { "id": "remarketing-types", "label": "再营销广告类型" },
+        { "id": "remarketing-creative", "label": "素材内容" }
+      ]
+    },
+    { "id": "website-optimization", "label": "网站优化排查" },
+    { "id": "account-setup", "label": "新账户前期设置与关联（ads, ga4, gmc）" },
+    { "id": "account-structure", "label": "Google广告账户结构框架" },
+    {
+      "id": "reporting",
+      "label": "Goole报表创建逻辑",
+      "children": [
+        { "id": "default-view", "label": "| 默认视图(新客户)" },
+        {
+          "id": "reporting-ads",
+          "label": "广告",
+          "children": [
+            { "id": "datastudio", "label": "客户数据分析表·datastudio" },
+            { "id": "sheets", "label": "客户数据汇总表·google sheet" }
+          ]
+        },
+        {
+          "id": "customer-analysis",
+          "label": "客户数据分析"
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { marked } from 'marked';
 import { courseData, homeworkData, type Lesson, type LessonType, getLessonById, getFirstLesson } from './data';
+import MindMap, { type MindMapNode } from './components/MindMap';
 
 const STORAGE_KEY = 'google-learn-progress-v1';
 const USER_KEY = 'google-learn-user-v1';
@@ -1276,6 +1277,8 @@ function FAQPanel() {
 function ContentRenderer({ lesson }: { lesson: Lesson }) {
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [mindMapData, setMindMapData] = useState<MindMapNode | null>(null);
+  const [mindMapLoading, setMindMapLoading] = useState(false);
 
   useEffect(() => {
     if (lesson.renderAs === 'markdown' || lesson.renderAs === 'html') {
@@ -1307,6 +1310,35 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
         .finally(() => setLoading(false));
     }
   }, [lesson.url, lesson.renderAs]);
+
+  // Special mindmap view for foundation-4
+  useEffect(() => {
+    if (lesson.id === 'foundation-4') {
+      setMindMapLoading(true);
+      fetch('/content/foundation-4/mindmap.json')
+        .then((r) => r.json())
+        .then((data) => setMindMapData(data))
+        .catch(() => setMindMapData(null))
+        .finally(() => setMindMapLoading(false));
+    } else {
+      setMindMapData(null);
+    }
+  }, [lesson.id]);
+
+  if (lesson.id === 'foundation-4' && mindMapData) {
+    return <MindMap data={mindMapData} />;
+  }
+
+  if (lesson.id === 'foundation-4' && mindMapLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center bg-slate-50">
+        <svg className="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+      </div>
+    );
+  }
 
   if (lesson.renderAs === 'image') {
     return (

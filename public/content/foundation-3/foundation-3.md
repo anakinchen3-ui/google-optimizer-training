@@ -1,4 +1,4 @@
-#### （**一）、什么是Google Ads？**
+# 一、什么是Google Ads？
 
 **定义**：
 
@@ -10,17 +10,17 @@
 - **多样化广告形式**：覆盖文字、图片、视频、商品目录等多种形式。
 - **AI 智能优化**：自动出价、素材组合、跨渠道投放提升效率。
 
-#### （二）、Google Ads包含哪些广告类型
+#二、Google Ads包含哪些广告类型
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/RFfPseIxdhGnK5tNn9pcrcSMnYa_Ungghl) 查看原表格（建议截图替换为本地图片）
+![搜索广告组成图](google_ads.png)
 
 
 
 除以上广告类型外，还有本地广告和应用广告，但这两种不适用于独立站，不详细讲述
 
-#### （三）**、Google Ads展示在哪里？**
+#三、Google Ads展示在哪里？
 
 - Google ads能展示在包含Google Search、Google Shopping、Google Discovery、Youtube等在内的Google自有资源中
 - 此外，Google Ads还能覆盖超3500 万个网站和应用合作，进一步拓宽广告覆盖面，帮助广告主完成阶段目标
