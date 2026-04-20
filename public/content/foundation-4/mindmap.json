@@ -249,7 +249,6 @@
       "id": "reporting",
       "label": "Goole报表创建逻辑",
       "children": [
-        { "id": "default-view", "label": "| 默认视图(新客户)" },
         {
           "id": "reporting-ads",
           "label": "广告",
@@ -257,10 +256,6 @@
             { "id": "datastudio", "label": "客户数据分析表·datastudio" },
             { "id": "sheets", "label": "客户数据汇总表·google sheet" }
           ]
-        },
-        {
-          "id": "customer-analysis",
-          "label": "客户数据分析"
         }
       ]
     }
