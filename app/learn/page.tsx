@@ -1277,7 +1277,7 @@ function FAQPanel() {
 function ContentRenderer({ lesson }: { lesson: Lesson }) {
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(false);
-  const [mindMapData, setMindMapData] = useState<MindMapNode | null>(null);
+  const [mindMapMap, setMindMapMap] = useState<Record<string, MindMapNode>>({});
   const [mindMapLoading, setMindMapLoading] = useState(false);
 
   useEffect(() => {
@@ -1317,23 +1317,34 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
       setMindMapLoading(true);
       fetch('/content/foundation-4/mindmap.json')
         .then((r) => r.json())
-        .then((data) => setMindMapData(data))
-        .catch(() => setMindMapData(null))
+        .then((data) => setMindMapMap({ default: data }))
+        .catch(() => setMindMapMap({}))
         .finally(() => setMindMapLoading(false));
     } else if (lesson.id === 'search-1') {
       setMindMapLoading(true);
-      fetch('/content/search-1/mindmap.json')
-        .then((r) => r.json())
-        .then((data) => setMindMapData(data))
-        .catch(() => setMindMapData(null))
+      Promise.all([
+        fetch('/content/search-1/mindmap.json')
+          .then((r) => (r.ok ? r.json() : null))
+          .catch(() => null),
+        fetch('/content/search-1/structure-mindmap.json')
+          .then((r) => (r.ok ? r.json() : null))
+          .catch(() => null),
+      ])
+        .then(([operation, structure]) => {
+          const map: Record<string, MindMapNode> = {};
+          if (operation) map['operation'] = operation;
+          if (structure) map['structure'] = structure;
+          setMindMapMap(map);
+        })
+        .catch(() => setMindMapMap({}))
         .finally(() => setMindMapLoading(false));
     } else {
-      setMindMapData(null);
+      setMindMapMap({});
     }
   }, [lesson.id]);
 
-  if (lesson.id === 'foundation-4' && mindMapData) {
-    return <MindMap data={mindMapData} />;
+  if (lesson.id === 'foundation-4' && mindMapMap['default']) {
+    return <MindMap data={mindMapMap['default']} />;
   }
 
   if (lesson.id === 'foundation-4' && mindMapLoading) {
@@ -1370,21 +1381,46 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
         </div>
       );
     }
-    // Check for mindmap placeholder in content
-    const mindmapPlaceholder = '<!-- mindmap:search-1 -->';
-    const hasMindmapPlaceholder = content.includes(mindmapPlaceholder);
+    // Check for mindmap placeholders in content
+    const mindmapPlaceholderRegex = /<!-- mindmap:([\w-]+) -->/g;
+    const hasMindmapPlaceholder = mindmapPlaceholderRegex.test(content);
+    mindmapPlaceholderRegex.lastIndex = 0;
 
-    if (hasMindmapPlaceholder && mindMapData) {
-      const [before, after] = content.split(mindmapPlaceholder);
+    if (hasMindmapPlaceholder && Object.keys(mindMapMap).length > 0) {
+      const parts: React.ReactNode[] = [];
+      let remaining = content;
+      let key = 0;
+
+      while (remaining) {
+        const match = mindmapPlaceholderRegex.exec(remaining);
+        if (!match) {
+          parts.push(<div key={key++} dangerouslySetInnerHTML={{ __html: remaining }} />);
+          break;
+        }
+
+        const before = remaining.substring(0, match.index);
+        const mapKey = match[1];
+        const after = remaining.substring(match.index! + match[0].length);
+
+        if (before) {
+          parts.push(<div key={key++} dangerouslySetInnerHTML={{ __html: before }} />);
+        }
+
+        if (mindMapMap[mapKey]) {
+          parts.push(
+            <div key={key++} className="my-4 -mx-8">
+              <MindMap data={mindMapMap[mapKey]} />
+            </div>
+          );
+        }
+
+        remaining = after;
+        mindmapPlaceholderRegex.lastIndex = 0;
+      }
+
       return (
         <div className="flex-1 overflow-auto bg-white p-8">
-          <div className="max-w-4xl mx-auto markdown-body">
-            <div dangerouslySetInnerHTML={{ __html: before }} />
-            <div className="my-4 -mx-8">
-              <MindMap data={mindMapData} />
-            </div>
-            <div dangerouslySetInnerHTML={{ __html: after }} />
-          </div>
+          <div className="max-w-4xl mx-auto markdown-body">{parts}</div>
         </div>
       );
     }

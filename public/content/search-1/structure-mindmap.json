@@ -1,0 +1,23 @@
+{
+  "id": "account",
+  "label": "账户",
+  "children": [
+    {
+      "id": "campaign-1",
+      "label": "搜索广告系列1",
+      "children": [
+        {
+          "id": "ad-group-1",
+          "label": "广告组1",
+          "children": [
+            { "id": "keywords-ads", "label": "关键字、广告语" }
+          ]
+        },
+        { "id": "ad-group-2", "label": "广告组2" },
+        { "id": "ad-group-3", "label": "广告组3" }
+      ]
+    },
+    { "id": "campaign-2", "label": "广告系列2" },
+    { "id": "campaign-3", "label": "广告系列3" }
+  ]
+}

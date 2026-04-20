@@ -24,7 +24,7 @@
 
 ### 搜索广告的运作逻辑
 
-<!-- mindmap:search-1 -->
+<!-- mindmap:operation -->
 
 ### 付费搜索广告与自然搜索之间的区别
 
@@ -46,7 +46,7 @@
 
 
 
-![whiteboard](MQy0wgolihTwxrby9F6cSF7Fnsg.jpg)
+<!-- mindmap:structure -->
 
 
 
