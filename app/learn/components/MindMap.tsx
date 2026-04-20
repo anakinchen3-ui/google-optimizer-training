@@ -123,8 +123,8 @@ interface MindMapProps {
 export default function MindMap({ data }: MindMapProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedSet, setExpandedSet] = useState<Set<string>>(() => {
-    // 默认展开前两层
-    return new Set(getIdsToDepth(data, 2));
+    // 默认只展开根节点和一级分类节点（搜索广告、购物广告等）
+    return new Set(getIdsToDepth(data, 1));
   });
 
   const allIds = useMemo(() => new Set(collectAllIds(data)), [data]);
@@ -221,7 +221,7 @@ export default function MindMap({ data }: MindMapProps) {
       </div>
 
       {/* 思维导图区域 */}
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-6 pb-16">
         <div className="min-w-max">
           <TreeNode
             node={data}
