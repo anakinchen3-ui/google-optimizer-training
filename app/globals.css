@@ -107,10 +107,15 @@ body {
 }
 
 .markdown-body img {
+  display: block;
   max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 460px;
+  margin: 1.25rem auto;
   border-radius: 0.5rem;
-  margin: 1rem 0;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .markdown-body table {
