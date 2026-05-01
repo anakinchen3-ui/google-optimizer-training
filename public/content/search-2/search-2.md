@@ -27,8 +27,7 @@
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_Hu8yWN) 查看原表格（建议截图替换为本地图片）
-
+![img](关键字挖掘5种方法.png)
 
 
 **关键字规划师的使用方法：**
@@ -62,7 +61,7 @@
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_SWeyoV) 查看原表格（建议截图替换为本地图片）
+![img](按意图分层.png)
 
 
 
@@ -106,7 +105,7 @@
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_TY6Qal) 查看原表格（建议截图替换为本地图片）
+![img](避坑指南.png)
 
 
 
@@ -118,7 +117,7 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_8cZgos) 查看原表格（建议截图替换为本地图片）
+![img](匹配方式.png)
 
 
 
@@ -150,13 +149,6 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
 - **品牌词系列**：完全匹配（如 `[Anker]`）+ 词组匹配（如 `"Anker Charger"`）。
 - **竞品词系列**：词组匹配（如 `"Bose Replace"`）+ 完全匹配（如 [`Bose` Earphone]）。
 - **通用词系列**：词组匹配（如 `"Patchwork cap sleeve maxi dress"`）。
-1. **预算分配比例（参考）**
-
-
-
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_IhLpEQ) 查看原表格（建议截图替换为本地图片）
-
-
 
 ###### 否定关键词（Negative Keywords）的配合使用
 
@@ -215,7 +207,7 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_nc2Vfn) 查看原表格（建议截图替换为本地图片）
+![img](标题方向.png)
 
 
 
@@ -258,7 +250,7 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_3dMOnE) 查看原表格（建议截图替换为本地图片）
+![img](描述方向.png)
 
 
 
@@ -266,7 +258,7 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_ivvj9H) 查看原表格（建议截图替换为本地图片）
+![img](文案模板.png)
 
 
 
@@ -278,7 +270,7 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_DuR8dK) 查看原表格（建议截图替换为本地图片）
+![img](附加信息类型.png)
 
 
 
@@ -340,7 +332,20 @@ Google 基于 AI 实时调整出价，最大化广告目标达成效率。
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_c8bj1W) 查看原表格（建议截图替换为本地图片）
+![img](出价策略.png)
+
+
+1. **讲解：Target ROAS（目标广告支出回报率）**
+- **运作逻辑**：
+  - 系统预测高价值用户（如客单价$100的用户）并提高出价，反之降低出价。
+  - 需至少过去30天有50次转化，模型才能稳定生效。
+- **案例**：
+
+目标ROAS设为400%（即1:4），系统优先展示给过去购买过高价值的用户，放弃低客单价流量。
+
+
+
+![img](ATe0bo5NoozclCx0SyTcpVcxns4.png)
 
 
 
@@ -372,7 +377,7 @@ Google 基于 AI 实时调整出价，最大化广告目标达成效率。
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_PfQNUp) 查看原表格（建议截图替换为本地图片）
+![img](测试阶段.png)
 
 
 
@@ -395,7 +400,7 @@ Google 基于 AI 实时调整出价，最大化广告目标达成效率。
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_nnO8b8) 查看原表格（建议截图替换为本地图片）
+![img](收费方式.png)
 
 
 
@@ -407,36 +412,22 @@ Google 基于 AI 实时调整出价，最大化广告目标达成效率。
 
 关键词“无线耳机”下，你的质量得分8分，竞争对手出价2（质量得分7分）：你的实际CPC=(2×7)/8+0.01≈2（质量得分7分）：你的实际*CPC*=(2×7)/8+0.01≈1.76
 
-1. **Target ROAS（目标广告支出回报率）**
-- **运作逻辑**：
-  - 系统预测高价值用户（如客单价$100的用户）并提高出价，反之降低出价。
-  - 需至少过去30天有50次转化，模型才能稳定生效。
-- **案例**：
-
-目标ROAS设为400%（即1:4），系统优先展示给过去购买过高价值的用户，放弃低客单价流量。
-
-
-
-![img](ATe0bo5NoozclCx0SyTcpVcxns4.png)
-
-
-
 1. **CPM（千次展示付费）**
 - **适用优化目标**：
   - 品牌知名度（Brand Awareness）
   - 覆盖人数（Reach）
 - **数据参考**：
-  - 展示广告平均CPM为2−2−10（受行业竞争影响大，金融类可达$15+）。
+  - 展示广告平均CPM为2−5（受行业竞争影响大）。
 
 ---
 
-######## **三、如何选择收费模式？**
+######## **三、如何选择出价模式？**
 
 **根据广告目标选择**
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/GfHzsA1FshrEYathOVFcinCKnsc_4PINag) 查看原表格（建议截图替换为本地图片）
+![img](广告目标.png)
 
 
 
