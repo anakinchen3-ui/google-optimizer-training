@@ -1739,7 +1739,7 @@ export default function LearnPage() {
 
                             {lesson.children && (
                               <div className="pl-4">
-                                {lesson.children.map((child) => (
+                                {lesson.children.filter((child) => !child.isHomework).map((child) => (
                                   <button
                                     key={child.id}
                                     onClick={() => handleLessonClick(child)}
