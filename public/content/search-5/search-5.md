@@ -33,11 +33,6 @@
 
 
 
-> 💡 **提示**：[ ] 实操作业：完成测试[搜索广告出价策略测试题](https://pwl28kvg7c4.feishu.cn/docx/Yz07dJ9uyofAM6xQtOpcHWobnxb)
-
-
-
-
 
 > 💡 **提示**：每周进行学习心得总结 总结内容：要求同上
 
