@@ -140,7 +140,12 @@ Feed优化的三大进程和调整方式
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/ZLuWs3wnPhuydbtkfVGcXRhXnsd_J7oSAx) 查看原表格（建议截图替换为本地图片）
+| 指标 | 公式 | 说明 |
+|------|------|------|
+| ROAS（广告支出回报率） | 广告收入 ÷ 广告支出 | 衡量广告的盈利能力 |
+| Conv. Value（转化价值） | - | 通过广告产生的总收入，即广告带来的销售额 |
+| Conv. Rate（转化率） | 转化次数 ÷ 点击次数 | 衡量流量的质量 |
+| Cost per Conversion（每次转化成本） | 广告总费用 ÷ 转化次数 | 评估获取新客户的成本 |
 
 
 
@@ -148,7 +153,12 @@ Feed优化的三大进程和调整方式
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/ZLuWs3wnPhuydbtkfVGcXRhXnsd_gY7CGn) 查看原表格（建议截图替换为本地图片）
+| 指标 | 公式 | 说明 |
+|------|------|------|
+| CTR（点击率） | 点击次数 ÷ 展示次数 | 衡量广告的吸引力 |
+| Avg. CPC（平均每次点击费用） | 总费用 ÷ 总点击次数 | 每次点击的平均成本，影响预算消耗速度 |
+| Impressions（展示次数） | - | 你的广告被展示的总次数 |
+| Click Share（点击份额） | 广告点击量 ÷ 预估可获得的点击量 | 反映广告的竞争力 |
 
 
 
@@ -156,7 +166,11 @@ Feed优化的三大进程和调整方式
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/ZLuWs3wnPhuydbtkfVGcXRhXnsd_fWZdCd) 查看原表格（建议截图替换为本地图片）
+| 指标 | 公式 | 说明 |
+|------|------|------|
+| Impression Share（展示份额） | 你的展示量 ÷ 预估可获得展示量 | 衡量广告的曝光占比 |
+| Absolute Top Impression Share（绝对排名第一的展示份额） | 你的广告在搜索结果顶部（第一名）的比率 | 反映广告在最高位置的竞争力 |
+| Price Competitiveness（价格竞争力） | - | 你的产品价格相对于竞争对手的价格水平 |
 
 
 
@@ -164,7 +178,11 @@ Feed优化的三大进程和调整方式
 
 
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/ZLuWs3wnPhuydbtkfVGcXRhXnsd_AZq6Ls) 查看原表格（建议截图替换为本地图片）
+| 指标 | 查看逻辑 | 说明 |
+|------|----------|------|
+| Top Selling Products（畅销产品） | 购物广告中转化占比、流量占比靠前的产品 | 哪些产品的广告带来了最高的销售额 |
+| Search Term Performance（搜索词表现） | 标准购物广告从搜索字词中查看 | 哪些搜索词触发了你的广告，以及它们的点击和转化效果 |
+| Product Performance（产品表现） | 产品维度查看每条 feed 的表现 | 细化到单个 SKU 的表现数据，如点击率、转化率等 |
 
 
 
