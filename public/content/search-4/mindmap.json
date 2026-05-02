@@ -4,91 +4,141 @@
   "children": [
     {
       "id": "step1",
-      "label": "1. 制作新广告系列"
+      "label": "1.选择目标",
+      "children": [
+        { "id": "step1-1", "label": "根据客户实际目标进行选择" },
+        { "id": "step1-2", "label": "一般选择销售" }
+      ]
     },
     {
       "id": "step2",
-      "label": "2. 选择广告目标",
+      "label": "2.选择销售后，选择广告系列的转化目标",
       "children": [
-        { "id": "step2-1", "label": "销售" },
-        { "id": "step2-2", "label": "潜在客户" },
-        { "id": "step2-3", "label": "网站流量" }
+        { "id": "step2-1", "label": "一般必选「购买」转化目标" },
+        { "id": "step2-2", "label": "新账户前期可同时选择「加入购物车」或「发起结账」" }
       ]
     },
     {
       "id": "step3",
-      "label": "3. 选择搜索广告类型"
+      "label": "3.选择广告系列类型，选择搜索广告，并进行广告系列命名",
+      "children": [
+        { "id": "step3-1", "label": "在「选择您希望通过何种方式达成目标」处" },
+        { "id": "step3-2", "label": "除非客户需要进行引流，否则不用勾选" }
+      ]
     },
     {
       "id": "step4",
-      "label": "4. 输入业务信息"
+      "label": "4.选择对应的出价方式",
+      "children": [
+        {
+          "id": "step4-1",
+          "label": "针对新客户",
+          "children": [
+            { "id": "step4-1-1", "label": "先选择「人工CPC」出价" },
+            { "id": "step4-1-2", "label": "广告系列创建完后进入设置中更改" }
+          ]
+        },
+        {
+          "id": "step4-2",
+          "label": "若账户有数据积累或品牌有知名度",
+          "children": [
+            {
+              "id": "step4-2-1",
+              "label": "转化次数",
+              "children": [
+                { "id": "step4-2-1-1", "label": "尽可能提升转化次数出价" },
+                { "id": "step4-2-1-2", "label": "Target CPA出价" }
+              ]
+            },
+            {
+              "id": "step4-2-2",
+              "label": "转化价值",
+              "children": [
+                { "id": "step4-2-2-1", "label": "尽可能提升转化价值出价" },
+                { "id": "step4-2-2-2", "label": "Target ROAS出价" }
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "step5",
-      "label": "5. 命名广告系列"
+      "label": "5.选择投放网络",
+      "children": [
+        { "id": "step5-1", "label": "Google搜索合作伙伴网络必选" },
+        { "id": "step5-2", "label": "展示广告网络是将搜索广告投放到与google合作的展示广告网络（网页、app）" },
+        { "id": "step5-3", "label": "一般cpc会比较低，但效果不稳定" }
+      ]
     },
     {
       "id": "step6",
-      "label": "6. 选择出价目标",
+      "label": "6.选择地理位置",
       "children": [
-        { "id": "step6-1", "label": "Manual CPC" },
-        { "id": "step6-2", "label": "智能出价（Target ROAS 等）" }
+        { "id": "step6-1", "label": "必须与客户想要投放的国家一致" },
+        { "id": "step6-2", "label": "不得有错误" }
       ]
     },
     {
       "id": "step7",
-      "label": "7. 设置定位条件",
+      "label": "7.选择语言",
       "children": [
-        { "id": "step7-1", "label": "投放地域" },
-        { "id": "step7-2", "label": "目标语言" },
-        { "id": "step7-3", "label": "搜索网络/展示网络" }
+        { "id": "step7-1", "label": "必须与对应地区的语言一致" }
       ]
     },
     {
       "id": "step8",
-      "label": "8. 关键字匹配与素材设置",
+      "label": "8.自动制作的素材资源选项",
       "children": [
-        { "id": "step8-1", "label": "自定义关键字匹配方式" },
-        { "id": "step8-2", "label": "关闭自动生成素材" }
+        { "id": "step8-1", "label": "即是否让Google使用您的着陆页、网域和广告中的内容帮您生成广告标题和广告内容描述素材资源" },
+        { "id": "step8-2", "label": "优点：google机器会自动创建，减少人力" },
+        { "id": "step8-3", "label": "缺点：内容质量相关度不受控" }
       ]
     },
     {
       "id": "step9",
-      "label": "9. 跳过自动生成关键字和素材"
+      "label": "9.输入对应关键字",
+      "children": [
+        { "id": "step9-1", "label": "此处按照搜索广告关键字方案进行填充" },
+        { "id": "step9-2", "label": "广泛匹配：abc" },
+        { "id": "step9-3", "label": "词组匹配：\"abc\"" },
+        { "id": "step9-4", "label": "完全匹配：[abc]" }
+      ]
     },
     {
       "id": "step10",
-      "label": "10. 创建广告组",
+      "label": "10.填写最终到达网址",
       "children": [
-        { "id": "step10-1", "label": "标准：手动输入关键字" },
-        { "id": "step10-2", "label": "动态：基于网站内容" }
+        { "id": "step10-1", "label": "填入想要用户进入的落地页" }
       ]
     },
     {
       "id": "step11",
-      "label": "11. 制作搜索广告",
-      "children": [
-        { "id": "step11-1", "label": "最终到达网址" },
-        { "id": "step11-2", "label": "广告标题（最多15条）" },
-        { "id": "step11-3", "label": "广告描述（最多4条）" },
-        { "id": "step11-4", "label": "附加信息" }
-      ]
+      "label": "11.填写广告文案-标题、内容描述"
     },
     {
       "id": "step12",
-      "label": "12. 动态搜索广告描述"
+      "label": "12.填写商家名称",
+      "children": [
+        { "id": "step12-1", "label": "商家名称应与您的网址或经过验证的广告客户名称一致" }
+      ]
     },
     {
       "id": "step13",
-      "label": "13. 设置预算"
+      "label": "13.填写素材资源",
+      "children": [
+        { "id": "step13-1", "label": "素材资源必填：价格、结构化摘要、促销" },
+        { "id": "step13-2", "label": "若网站做活动必填促销" }
+      ]
     },
     {
       "id": "step14",
-      "label": "14. 预览并发布",
+      "label": "14.填写平均每日预算",
       "children": [
-        { "id": "step14-1", "label": "预览广告效果" },
-        { "id": "step14-2", "label": "检查清单确认" },
-        { "id": "step14-3", "label": "发布广告" }
+        { "id": "step14-1", "label": "平均每日预算填写后天与天之间花费会存在一定的差异" },
+        { "id": "step14-2", "label": "但广告系列在30天内会按照给定的预算目标去跑" },
+        { "id": "step14-3", "label": "搜索广告的实际花费与关键字的搜索量有关" },
+        { "id": "step14-4", "label": "若实际花费与给定预算差异过大，需从关键字搜索量、匹配方式、出价方式等方面排查" }
       ]
     }
   ]
