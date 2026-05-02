@@ -108,11 +108,7 @@
 
 # 购物广告的创建流程
 
-
-
-![whiteboard](Lb7Owwub6hwjl5bXeUPcd5olnOb.jpg)
-
-
+<!-- mindmap:creation -->
 
 ### 购物广告的基础设置
 

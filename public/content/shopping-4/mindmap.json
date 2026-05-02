@@ -1,0 +1,46 @@
+{
+  "id": "shopping-creation-flow",
+  "label": "购物广告创建流程",
+  "children": [
+    {
+      "id": "step1",
+      "label": "1. 创建GMC账户",
+      "children": [
+        { "id": "step1-1", "label": "使用 Google 账户登录或创建一个新的 Google 账户" },
+        { "id": "step1-2", "label": "按照提示完成账户设置，包括商家名称、邮箱地址和其他必要信息" },
+        {
+          "id": "step1-3",
+          "label": "创建产品数据",
+          "children": [
+            { "id": "step1-3-1", "label": "上传方式：可以通过手动上传、API 或第三方平台上传数据" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "step2",
+      "label": "2. 设置 Google Shopping 广告",
+      "children": [
+        { "id": "step2-1", "label": "在 GMC 中，链接 Google Ads 账户" },
+        { "id": "step2-2", "label": "创建广告活动：在 Google Ads 中创建 Shopping 广告活动，设置预算和目标" }
+      ]
+    },
+    {
+      "id": "step3",
+      "label": "3. 优化购物广告",
+      "children": [
+        { "id": "step3-1", "label": "优化产品标题和描述：确保产品标题和描述准确且包含相关关键词" },
+        { "id": "step3-2", "label": "高质量图片：提供高质量的产品图片，吸引用户点击" },
+        { "id": "step3-3", "label": "竞争性定价：确保价格具有竞争力，以提高转化率" }
+      ]
+    },
+    {
+      "id": "step4",
+      "label": "4. 监控和分析表现",
+      "children": [
+        { "id": "step4-1", "label": "性能报告：查看产品的点击率、转化率和其他指标" },
+        { "id": "step4-2", "label": "A/B 测试：测试不同的广告设置和产品信息，优化广告效果" }
+      ]
+    }
+  ]
+}
