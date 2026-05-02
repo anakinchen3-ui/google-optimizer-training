@@ -112,7 +112,7 @@
 
 ### 购物广告的基础设置
 
-[04. 创建PLA广告步骤.mp4](https://pwl28kvg7c4.feishu.cn/docx/ZZk1bXnKmowfNxxlWp2cHXRenFd)
+[04. 创建PLA广告步骤.mp4](https://pwl28kvg7c4.feishu.cn/file/ZZk1bXnKmowfNxxlWp2cHXRenFd)
 
 ## 购物广告的数据指标
 
