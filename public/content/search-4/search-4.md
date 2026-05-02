@@ -17,11 +17,7 @@
 
 ### 搜索广告的创建流程
 
-
-
-![whiteboard](H9T2wvT7Mhywu9bdrTIcsVwfnTe.jpg)
-
-
+<!-- mindmap:creation -->
 
 ##### 搭建广告结构的4个步骤
 

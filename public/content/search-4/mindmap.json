@@ -1,0 +1,59 @@
+{
+  "id": "creation-flow",
+  "label": "搜索广告创建流程",
+  "children": [
+    {
+      "id": "step1",
+      "label": "1. 创建广告系列",
+      "children": [
+        { "id": "step1-1", "label": "选择目标（销售/潜在客户/流量）" },
+        { "id": "step1-2", "label": "选择搜索广告类型" },
+        { "id": "step1-3", "label": "输入广告系列名称" }
+      ]
+    },
+    {
+      "id": "step2",
+      "label": "2. 设置出价与预算",
+      "children": [
+        { "id": "step2-1", "label": "选择出价策略" },
+        { "id": "step2-2", "label": "设置每日预算" }
+      ]
+    },
+    {
+      "id": "step3",
+      "label": "3. 定位设置",
+      "children": [
+        { "id": "step3-1", "label": "选择投放地域" },
+        { "id": "step3-2", "label": "选择目标语言" },
+        { "id": "step3-3", "label": "搜索网络/展示网络" }
+      ]
+    },
+    {
+      "id": "step4",
+      "label": "4. 创建广告组",
+      "children": [
+        { "id": "step4-1", "label": "标准：手动输入关键字" },
+        { "id": "step4-2", "label": "动态：基于网站内容自动匹配" }
+      ]
+    },
+    {
+      "id": "step5",
+      "label": "5. 制作广告",
+      "children": [
+        { "id": "step5-1", "label": "最终到达网址" },
+        { "id": "step5-2", "label": "广告标题（最多15条）" },
+        { "id": "step5-3", "label": "广告描述（最多4条）" },
+        { "id": "step5-4", "label": "附加信息" }
+      ]
+    },
+    {
+      "id": "step6",
+      "label": "6. 审核发布",
+      "children": [
+        { "id": "step6-1", "label": "预览广告效果" },
+        { "id": "step6-2", "label": "检查清单确认" },
+        { "id": "step6-3", "label": "发布广告" }
+      ]
+    }
+  ]
+}
