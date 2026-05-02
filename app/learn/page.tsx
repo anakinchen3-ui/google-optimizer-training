@@ -1302,6 +1302,17 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
             );
           }
 
+          // Convert Feishu custom tags to standard HTML
+          html = html
+            .replace(/<lark-table[^>]*>/g, '<table class="border-collapse w-full">')
+            .replace(/<\/lark-table>/g, '</table>')
+            .replace(/<lark-tr>/g, '<tr>')
+            .replace(/<\/lark-tr>/g, '</tr>')
+            .replace(/<lark-td[^>]*>/g, '<td class="border border-slate-200 p-3">')
+            .replace(/<\/lark-td>/g, '</td>')
+            .replace(/<text\s+bgcolor="([^"]+)">/g, '<span style="background-color: $1;">')
+            .replace(/<\/text>/g, '</span>');
+
           setContent(html);
         })
         .catch(() => {
