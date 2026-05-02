@@ -1311,7 +1311,9 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
             .replace(/<lark-td[^>]*>/g, '<td class="border border-slate-200 p-3">')
             .replace(/<\/lark-td>/g, '</td>')
             .replace(/<text\s+bgcolor="([^"]+)">/g, '<span style="background-color: $1;">')
-            .replace(/<\/text>/g, '</span>');
+            .replace(/<\/text>/g, '</span>')
+            .replace(/\{align="center"\}/g, '')
+            .replace(/- \[ \]/g, '<input type="checkbox" disabled class="mr-1 align-middle">');
 
           setContent(html);
         })
