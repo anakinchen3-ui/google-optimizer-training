@@ -1204,52 +1204,199 @@ function ReflectionPanel({ userName }: { userName: string }) {
   );
 }
 
-const faqData = [
-  {
-    q: '如何完成课程学习？',
-    a: '点击左侧课程目录中的章节即可在右侧查看飞书文档。阅读完成后，点击右上角「标记为已完成」按钮记录学习进度。',
-  },
-  {
-    q: '为什么有些资料打不开？',
-    a: '部分文件夹类型资料需要在飞书中打开。点击「在飞书中打开」按钮，使用已登录的飞书账号访问即可。',
-  },
-  {
-    q: '我的学习进度会保存吗？',
-    a: '会。学习进度自动保存在浏览器本地，下次用同一设备登录时会自动恢复。',
-  },
-  {
-    q: '如何参加考试和考核？',
-    a: '学员可切换到顶部「考试」板块参加考试；考核入口仅对导师和管理员可见。',
-  },
-  {
-    q: '登录时提示「没有权限」怎么办？',
-    a: '请联系管理员确认你的飞书账号已被添加到系统中。新员工的权限需要管理员手动开通。',
-  },
-  {
-    q: '学习心得可以修改或删除吗？',
-    a: '目前支持删除后重新填写。后续版本将支持编辑功能。',
-  },
-];
+interface FAQItem {
+  id: string;
+  category: string;
+  question: string;
+  answer: string;
+  askedBy?: string;
+  askedByName?: string;
+  createdAt: string;
+  answeredBy?: string;
+  answeredAt?: string;
+  isPreset?: boolean;
+}
 
-function FAQPanel() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+function FAQPanel({ user }: { user: User }) {
+  const [items, setItems] = useState<FAQItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeCategory, setActiveCategory] = useState<string>('全部');
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [askModalOpen, setAskModalOpen] = useState(false);
+  const [answerModalOpen, setAnswerModalOpen] = useState(false);
+  const [selectedFaq, setSelectedFaq] = useState<FAQItem | null>(null);
+  const [questionInput, setQuestionInput] = useState('');
+  const [categoryInput, setCategoryInput] = useState('其他');
+  const [answerInput, setAnswerInput] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+
+  const isMentorOrAdmin = user.role === 'mentor' || user.role === 'admin';
+
+  const fetchFAQs = useCallback(async () => {
+    try {
+      const res = await fetch('/api/faq/list');
+      const data = await res.json();
+      if (data.ok) {
+        setItems(data.data);
+        if (data.data.length > 0 && !openId) {
+          const firstAnswered = data.data.find((i: FAQItem) => i.answer);
+          if (firstAnswered) setOpenId(firstAnswered.id);
+        }
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  }, [openId]);
+
+  useEffect(() => {
+    fetchFAQs();
+  }, [fetchFAQs]);
+
+  const categories = ['全部', ...Array.from(new Set(items.map((i) => i.category)))];
+
+  const filteredItems =
+    activeCategory === '全部' ? items : items.filter((i) => i.category === activeCategory);
+
+  const handleAsk = async () => {
+    if (!questionInput.trim()) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/faq/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.user_id,
+          userName: user.name,
+          category: categoryInput,
+          question: questionInput.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setQuestionInput('');
+        setAskModalOpen(false);
+        await fetchFAQs();
+        setActiveCategory(categoryInput);
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleAnswer = async () => {
+    if (!answerInput.trim() || !selectedFaq) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/faq/answer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          answererId: user.user_id,
+          answererName: user.name,
+          role: user.role,
+          faqId: selectedFaq.id,
+          answer: answerInput.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setAnswerInput('');
+        setAnswerModalOpen(false);
+        setSelectedFaq(null);
+        await fetchFAQs();
+      }
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="flex-1 overflow-y-auto p-8 bg-slate-50">
       <div className="max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold text-slate-900 mb-2">常见问题</h2>
-        <p className="text-slate-500 mb-8">使用过程中遇到问题？先来这里看看。</p>
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900">常见问题</h2>
+            <p className="text-slate-500 mt-1">使用过程中遇到问题？先来这里看看。</p>
+          </div>
+          {user.role === 'student' && (
+            <button
+              onClick={() => setAskModalOpen(true)}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              我要提问
+            </button>
+          )}
+        </div>
+
+        {/* Category tabs */}
+        <div className="flex flex-wrap gap-2 mt-6 mb-4">
+          {categories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                activeCategory === cat
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {loading && (
+          <div className="text-center py-12">
+            <svg className="animate-spin h-6 w-6 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+          </div>
+        )}
+
+        {!loading && filteredItems.length === 0 && (
+          <div className="text-center py-12 bg-white rounded-xl border border-slate-200">
+            <p className="text-slate-500">该分类下暂无问题</p>
+          </div>
+        )}
 
         <div className="space-y-3">
-          {faqData.map((item, idx) => {
-            const isOpen = openIndex === idx;
+          {filteredItems.map((item) => {
+            const isOpen = openId === item.id;
+            const isUnanswered = !item.answer;
             return (
-              <div key={idx} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+              <div key={item.id} className="bg-white rounded-xl border border-slate-200 overflow-hidden">
                 <button
-                  onClick={() => setOpenIndex(isOpen ? null : idx)}
+                  onClick={() => setOpenId(isOpen ? null : item.id)}
                   className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-slate-50 transition-colors"
                 >
-                  <span className="font-medium text-slate-900 pr-4">{item.q}</span>
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={`px-2 py-0.5 rounded text-xs font-medium ${
+                        item.category === '搜索广告'
+                          ? 'bg-orange-100 text-orange-700'
+                          : item.category === '购物广告'
+                          ? 'bg-green-100 text-green-700'
+                          : item.category === '广告类型'
+                          ? 'bg-purple-100 text-purple-700'
+                          : 'bg-slate-100 text-slate-600'
+                      }`}
+                    >
+                      {item.category}
+                    </span>
+                    <span className="font-medium text-slate-900 pr-4 text-left">{item.question}</span>
+                    {isUnanswered && (
+                      <span className="px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-700 flex-shrink-0">
+                        待回答
+                      </span>
+                    )}
+                  </div>
                   <svg
                     className={`w-5 h-5 text-slate-400 flex-shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                     viewBox="0 0 24 24"
@@ -1262,7 +1409,42 @@ function FAQPanel() {
                 </button>
                 {isOpen && (
                   <div className="px-5 pb-4 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                    {item.a}
+                    {isUnanswered ? (
+                      <div>
+                        <p className="text-slate-400 italic mb-2">该问题尚未回答</p>
+                        {!item.isPreset && (
+                          <p className="text-xs text-slate-400">
+                            提问人：{item.askedByName} · {new Date(item.createdAt).toLocaleDateString('zh-CN')}
+                          </p>
+                        )}
+                        {isMentorOrAdmin && (
+                          <button
+                            onClick={() => {
+                              setSelectedFaq(item);
+                              setAnswerModalOpen(true);
+                            }}
+                            className="mt-3 inline-flex items-center gap-1 px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-xs font-medium"
+                          >
+                            回答此问题
+                          </button>
+                        )}
+                      </div>
+                    ) : (
+                      <div>
+                        <div className="whitespace-pre-line">{item.answer}</div>
+                        {(item.answeredBy || item.askedByName) && (
+                          <div className="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                            <span>
+                              {item.askedByName && !item.isPreset && `提问：${item.askedByName}`}
+                            </span>
+                            <span>
+                              {item.answeredBy && `回答：${item.answeredBy}`}
+                              {item.answeredAt && ` · ${new Date(item.answeredAt).toLocaleDateString('zh-CN')}`}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -1270,6 +1452,112 @@ function FAQPanel() {
           })}
         </div>
       </div>
+
+      {/* Ask Modal */}
+      {askModalOpen && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-slate-900">我要提问</h3>
+              <button onClick={() => setAskModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">问题分类</label>
+                <select
+                  value={categoryInput}
+                  onChange={(e) => setCategoryInput(e.target.value)}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option>日常使用</option>
+                  <option>搜索广告</option>
+                  <option>购物广告</option>
+                  <option>广告类型</option>
+                  <option>其他</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">问题描述</label>
+                <textarea
+                  value={questionInput}
+                  onChange={(e) => setQuestionInput(e.target.value)}
+                  placeholder="请详细描述您遇到的问题..."
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  rows={4}
+                />
+              </div>
+            </div>
+            <div className="px-6 py-4 border-t border-slate-100 flex justify-end gap-3">
+              <button
+                onClick={() => setAskModalOpen(false)}
+                className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+              >
+                取消
+              </button>
+              <button
+                onClick={handleAsk}
+                disabled={!questionInput.trim() || submitting}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50"
+              >
+                {submitting ? '提交中...' : '提交问题'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Answer Modal */}
+      {answerModalOpen && selectedFaq && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-lg overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-slate-900">回答问题</h3>
+              <button onClick={() => setAnswerModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="bg-slate-50 rounded-lg p-3 text-sm text-slate-700">
+                <span className="font-medium">问题：</span>
+                {selectedFaq.question}
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">您的回答</label>
+                <textarea
+                  value={answerInput}
+                  onChange={(e) => setAnswerInput(e.target.value)}
+                  placeholder="请输入回答内容..."
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  rows={5}
+                />
+              </div>
+            </div>
+            <div className="px-6 py-4 border-t border-slate-100 flex justify-end gap-3">
+              <button
+                onClick={() => setAnswerModalOpen(false)}
+                className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+              >
+                取消
+              </button>
+              <button
+                onClick={handleAnswer}
+                disabled={!answerInput.trim() || submitting}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium disabled:opacity-50"
+              >
+                {submitting ? '提交中...' : '提交回答'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1877,7 +2165,7 @@ export default function LearnPage() {
         {activeTab === 'assessment' && isMentorOrAdmin && <AssessmentPanel />}
         {activeTab === 'users' && user && user.role === 'admin' && <UserManagementPanel user={user} />}
         {activeTab === 'reflection' && <ReflectionPanel userName={user.name} />}
-        {activeTab === 'faq' && <FAQPanel />}
+        {activeTab === 'faq' && user && <FAQPanel user={user} />}
       </div>
     </div>
   );
