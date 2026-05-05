@@ -1,9 +1,7 @@
 
 ### 培训学习流程
 
-
-
-![whiteboard](XznRwu5APh69dKbirO0cFOb0nVe.jpg)
+<!-- mindmap:training-flow -->
 
 
 

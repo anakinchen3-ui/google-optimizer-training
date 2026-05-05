@@ -1,0 +1,38 @@
+{
+  "id": "training-flow",
+  "label": "欢迎加入艾维",
+  "children": [
+    {
+      "id": "step-1",
+      "label": "1、了解艾维企业文化",
+      "children": [
+        { "id": "step-1-1", "label": "致艾维人的一封信" }
+      ]
+    },
+    {
+      "id": "step-2",
+      "label": "2、开通企业账户",
+      "children": [
+        { "id": "step-2-1", "label": "企业邮箱" },
+        { "id": "step-2-2", "label": "企业飞书" }
+      ]
+    },
+    {
+      "id": "step-3",
+      "label": "3、了解工作岗位",
+      "children": [
+        { "id": "step-3-1", "label": "岗位技能要求" },
+        { "id": "step-3-2", "label": "培训考核要求" },
+        { "id": "step-3-3", "label": "岗位晋升通道" }
+      ]
+    },
+    {
+      "id": "step-4",
+      "label": "4、开启学习",
+      "children": [
+        { "id": "step-4-1", "label": "学习周期" },
+        { "id": "step-4-2", "label": "学习通道" }
+      ]
+    }
+  ]
+}

@@ -1669,6 +1669,16 @@ function ContentRenderer({ lesson, onModalOpen }: { lesson: Lesson; onModalOpen?
           else setMindMapMap({});
         })
         .finally(() => setMindMapLoading(false));
+    } else if (lesson.id === 'extra-1') {
+      setMindMapLoading(true);
+      fetch('/content/extra-1/mindmap-training-flow.json')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null)
+        .then((data) => {
+          if (data) setMindMapMap({ 'training-flow': data });
+          else setMindMapMap({});
+        })
+        .finally(() => setMindMapLoading(false));
     } else if (lesson.id === 'video-2') {
       setMindMapLoading(true);
       Promise.all([
