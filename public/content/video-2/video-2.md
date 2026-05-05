@@ -21,57 +21,13 @@
 
 1. Short版位和YouTube版位视频广告的建议：
 
-  <lark-table rows="6" cols="2" column-widths="409,400">
-
-    <lark-tr>
-      <lark-td>
-        **Short版位视频建议**
-      </lark-td>
-      <lark-td>
-        **YouTube版位视频建议**
-      </lark-td>
-    </lark-tr>
-    <lark-tr>
-      <lark-td>
-        - 短小精悍，信息传递清晰有效
-      </lark-td>
-      <lark-td>
-        - 制作高质量、专业的内容，确保故事性
-      </lark-td>
-    </lark-tr>
-    <lark-tr>
-      <lark-td>
-        - 开头引人注目，抓住观众注意力
-      </lark-td>
-      <lark-td>
-        - 配合内容复杂程度和目标受众调整视频时长
-      </lark-td>
-    </lark-tr>
-    <lark-tr>
-      <lark-td>
-        - 明确的号召性用语，指导观众采取行动
-      </lark-td>
-      <lark-td>
-        - SEO优化，使用关键字提升可见性
-      </lark-td>
-    </lark-tr>
-    <lark-tr>
-      <lark-td>
-        - 适合移动端播放，确保在小屏幕上清晰可见
-      </lark-td>
-      <lark-td>
-        - 清晰展示品牌元素，增强品牌认知
-      </lark-td>
-    </lark-tr>
-    <lark-tr>
-      <lark-td>
-        - 使用字幕，以适应静音观看习惯
-      </lark-td>
-      <lark-td>
-        - 加入互动元素，增加用户参与感
-      </lark-td>
-    </lark-tr>
-  </lark-table>
+| Short 版位视频建议 | YouTube 版位视频建议 |
+|------|------|
+| 短小精悍，信息传递清晰有效 | 制作高质量、专业的内容，确保故事性 |
+| 开头引人注目，抓住观众注意力 | 配合内容复杂程度和目标受众调整视频时长 |
+| 明确的号召性用语，指导观众采取行动 | SEO 优化，使用关键字提升可见性 |
+| 适合移动端播放，确保在小屏幕上清晰可见 | 清晰展示品牌元素，增强品牌认知 |
+| 使用字幕，以适应静音观看习惯 | 加入互动元素，增加用户参与感 |
 
 1. 视频素材建议
   
