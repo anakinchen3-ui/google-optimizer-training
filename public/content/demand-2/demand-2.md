@@ -309,4 +309,4 @@
 
 
 
-#### 参考文档：[20250307 [External] Demand Gen with Product Feeds Implementation Guide.pdf](https://pwl28kvg7c4.feishu.cn/docx/ErumbrQ2JoHDArxu1MgcycL6nOe) {folded="true"}
+#### 参考文档：[20250307 [External] Demand Gen with Product Feeds Implementation Guide.pdf](https://pwl28kvg7c4.feishu.cn/file/ErumbrQ2JoHDArxu1MgcycL6nOe) {folded="true"}
