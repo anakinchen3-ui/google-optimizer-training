@@ -46,4 +46,4 @@
 
 
 
-### 搜索广告的测试：[测试入口](https%3A%2F%2Fpwl28kvg7c4.feishu.cn%2Fdocx%2FFYyodVEnfocX1Exzbyccz2R4nGc)
+### 搜索广告的测试：[测试入口](https://pwl28kvg7c4.feishu.cn/docx/FYyodVEnfocX1Exzbyccz2R4nGc)

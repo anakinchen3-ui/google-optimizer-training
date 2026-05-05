@@ -71,7 +71,7 @@
 
 
 
-- 保证视频简短且富有吸引力。将您最重要的信息放在视频较前的部分，以防观看者在视频结束之前停止观看。45 秒后[播放率](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F38679)会显著下降。
+- 保证视频简短且富有吸引力。将您最重要的信息放在视频较前的部分，以防观看者在视频结束之前停止观看。45 秒后[播放率](https://support.google.com/google-ads/answer/38679)会显著下降。
 - 由于视频可能是您与网站观看者沟通的唯一途径，因此请务必表述清楚您的业务范畴。
 - 在视频结束后，为客户提供明确的后续操作。这可以是进行购买，或者是访问您的网站或商店。
 
@@ -109,9 +109,9 @@
 
 #### 视频覆盖面广告系列运作方式
 
-- 经济实惠地扩大覆盖面：可使用[导视广告](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F2375464%2Fabout-video-ad-formats%23bumper-ads)、[可跳过的插播广告](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F2375464%2Fabout-video-ad-formats%23skippable-instream)或根据需要在同一个广告系列中搭配使用这两种广告格式，以更低的费用覆盖更多的唯一身份用户。如果您启用了“多格式广告”，还可以使用信息流广告和 Shorts 广告，在不超出预算的前提下覆盖更多用户。
+- 经济实惠地扩大覆盖面：可使用[导视广告](https://support.google.com/google-ads/answer/2375464/about-video-ad-formats#bumper-ads)、[可跳过的插播广告](https://support.google.com/google-ads/answer/2375464/about-video-ad-formats#skippable-instream)或根据需要在同一个广告系列中搭配使用这两种广告格式，以更低的费用覆盖更多的唯一身份用户。如果您启用了“多格式广告”，还可以使用信息流广告和 Shorts 广告，在不超出预算的前提下覆盖更多用户。
 - 不可跳过的插播广告：可使用时长不超过 15 秒的不可跳过的插播广告，在触达受众群体时向其传递完整讯息。
-- 目标频次：可使用导视广告、可跳过的插播广告和[不可跳过的插播广告](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F2375464%2Fabout-video-ad-formats%23nonskippable-instream)每周按设定次数覆盖相同用户。
+- 目标频次：可使用导视广告、可跳过的插播广告和[不可跳过的插播广告](https://support.google.com/google-ads/answer/2375464/about-video-ad-formats#nonskippable-instream)每周按设定次数覆盖相同用户。
 
 #### 视频覆盖面广告系列广告素材指南
 
@@ -240,7 +240,7 @@
 #### 视频观看广告系列的优势 {folded="true"}
 
 - 通过简化的流程轻松设置广告系列，无需再考虑广告格式和格式组合。
-- 您的视频可以利用 Google AI 技术以各种广告格式投放，在预算不变的情况下获得更多潜在观看次数，从而提高[**投资回报率 (ROI)**](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F14090)。
+- 您的视频可以利用 Google AI 技术以各种广告格式投放，在预算不变的情况下获得更多潜在观看次数，从而提高[**投资回报率 (ROI)**](https://support.google.com/google-ads/answer/14090)。
 - 在观看者浏览、探索和观看长视频内容，以及欣赏和浏览短视频内容时展示广告，从而提高品牌钟意度。
 
 #### 视频观看广告系列的运作方式 {folded="true"}

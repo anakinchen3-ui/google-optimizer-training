@@ -191,7 +191,7 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
   - 作用：补充品牌或产品详细信息，引导用户点击
   - 要求：句子首字母大写，结尾不要加句号，不要出现过于绝对的内容
 
-###### [**标题与描述的撰写建议**](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F6167122)
+###### [**标题与描述的撰写建议**](https://support.google.com/google-ads/answer/6167122)
 
 - 撰写富有吸引力、全新构思的广告文案
 - 制作能够反映您的品牌以及您提供的产品和服务的广告内容
@@ -213,7 +213,7 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
 
 ###### 标题优化技巧
 
-- [**动态关键词插入**](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F2454041%3Fctx%3Dtltp%26_gl%3D1*1b4ypnf*_ga*MTA4MDUwMzY2LjE3Mzg3MjUwMzY.*_ga_V9K47ZG8NP*MTc0NTQ3NzQ2NS4xMTguMS4xNzQ1NDc3NDY2LjU5LjAuMA..)：至少1条标题使用 `{Keyword}`（如“{Keyword}限时特价中”）。
+- [**动态关键词插入**](https://support.google.com/google-ads/answer/2454041?ctx=tltp&_gl=1*1b4ypnf*_ga*MTA4MDUwMzY2LjE3Mzg3MjUwMzY.*_ga_V9K47ZG8NP*MTc0NTQ3NzQ2NS4xMTguMS4xNzQ1NDc3NDY2LjU5LjAuMA..)：至少1条标题使用 `{Keyword}`（如“{Keyword}限时特价中”）。
   - 通过关键字插入功能，可以自动向广告添加广告组中触发广告展示的关键字。这样可以提高广告与搜寻您所提供产品或服务的用户的相关性。
   - 如广告标题：**购买**`**{KeyWord:巧克力}**`，若用户搜索黑巧克力，则显示的标题会变为：**购买黑巧克力**
   - 在插入关键字是，有三个选项，**词首字母大写**：所有关键字的第一个字母都采取大写形式；**句首字母大写**：只有第一个关键字的第一个字母采取大写形式；**小写**：任何字母都不采取大写形式（按需选择，一般建议采用词首字母大写）
@@ -314,7 +314,7 @@ Google 搜索广告的关键词匹配类型决定了用户的搜索词如何触�
 > 💡 **提示**：实操作业：请与leader确认品牌网站，并根据网址的产品来完成搜索广告的方案
 > 1、找到不少于50个关键字并完成分组
 > 2、撰写不少于15条广告标题、5条广告描述以及对应附加信息内容
-> 3、将方案内容放在以下文档中：[搜索广告练习作业](https%3A%2F%2Fpwl28kvg7c4.feishu.cn%2Fsheets%2FCCL5skRjuhgA1xt8SFEcRRxJnCb)模板
+> 3、将方案内容放在以下文档中：[搜索广告练习作业](https://pwl28kvg7c4.feishu.cn/sheets/CCL5skRjuhgA1xt8SFEcRRxJnCb)模板
 > 4、将以上方案内容在测试帐户模拟搭建
 > **考核点**：策略是否匹配品牌定位，逻辑链条是否完整
 

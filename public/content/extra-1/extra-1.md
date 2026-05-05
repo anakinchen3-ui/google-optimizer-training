@@ -9,9 +9,9 @@
 
 ### 一、了解艾维企业文化：
 
-[致艾维人的一封信](https%3A%2F%2Fqq1ar19am8r.feishu.cn%2Fdocx%2FYATcdrxWEoPIXqx8rGTcyiGAnof)（点击进入）
+[致艾维人的一封信](https://qq1ar19am8r.feishu.cn/docx/YATcdrxWEoPIXqx8rGTcyiGAnof)（点击进入）
 
-[艾维公司介绍](https%3A%2F%2Fpwl28kvg7c4.feishu.cn%2Fdocx%2FZPFTdOtVYobXfXxXgkdcnwQjndc)（点击进入）
+[艾维公司介绍](https://pwl28kvg7c4.feishu.cn/docx/ZPFTdOtVYobXfXxXgkdcnwQjndc)（点击进入）
 
 ### 二、申请企业邮箱、注册飞书帐号
 
@@ -19,9 +19,9 @@
 
 2、注册飞书账号：入职当天注册并加入到公司企业飞书（深圳艾维品牌营销有限公司）
 
-a. 下载和安装飞书客户端：[官方参考链接](https%3A%2F%2Fwww.feishu.cn%2Fhc%2Fzh-CN%2Farticles%2F360025035993-%25E4%25B8%258B%25E8%25BD%25BD%25E5%2592%258C%25E5%25AE%2589%25E8%25A3%2585%25E9%25A3%259E%25E4%25B9%25A6%25E5%25AE%25A2%25E6%2588%25B7%25E7%25AB%25AF)（点击进入）
+a. 下载和安装飞书客户端：[官方参考链接](https://www.feishu.cn/hc/zh-CN/articles/360025035993-下载和安装飞书客户端)（点击进入）
 
-b. 加入企业飞书：以下为深圳艾维品牌营销有限公司飞书二维码，请参考学习链接中 ”方式 2：通过企业二维码” 加入；新用户入门：[官方学习链接](https%3A%2F%2Fwww.feishu.cn%2Fhc%2Fzh-CN%2Fcategory%2F7303381511270072348-%25E6%2596%25B0%25E7%2594%25A8%25E6%2588%25B7%25E5%2585%25A5%25E9%2597%25A8)（点击进入）
+b. 加入企业飞书：以下为深圳艾维品牌营销有限公司飞书二维码，请参考学习链接中 ”方式 2：通过企业二维码” 加入；新用户入门：[官方学习链接](https://www.feishu.cn/hc/zh-CN/category/7303381511270072348-新用户入门)（点击进入）
 
 
 

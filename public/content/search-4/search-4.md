@@ -117,7 +117,7 @@
 
 
 
-> 💡 **提示**：[<u>展示广告系列</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F2404190)、[<u>购物广告系列</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F2454022)和[<u>视频广告系列</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F6340491)也可以帮助您达成同样的“销售”“潜在客户”和“网站流量”目标，但这些广告系列需要用到更多素材资源（例如图片、产品 Feed 和视频）。
+> 💡 **提示**：[<u>展示广告系列</u>](https://support.google.com/google-ads/answer/2404190)、[<u>购物广告系列</u>](https://support.google.com/google-ads/answer/2454022)和[<u>视频广告系列</u>](https://support.google.com/google-ads/answer/6340491)也可以帮助您达成同样的“销售”“潜在客户”和“网站流量”目标，但这些广告系列需要用到更多素材资源（例如图片、产品 Feed 和视频）。
 
 
 
@@ -134,13 +134,13 @@
   <tr>
     <td class="border border-slate-200 p-3">
 
-1. 如果取消选中此复选框，您的广告将在[<u>搜索网络</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F1722047)中的 Google 搜索页上展示，但不会在[<u>搜索网络合作伙伴</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F2616017)网站上展示。
+1. 如果取消选中此复选框，您的广告将在[<u>搜索网络</u>](https://support.google.com/google-ads/answer/1722047)中的 Google 搜索页上展示，但不会在[<u>搜索网络合作伙伴</u>](https://support.google.com/google-ads/answer/2616017)网站上展示。
 2. 勾选展示广告网络对应的复选框，可将覆盖面扩大到搜索结果以外的其他网站。
-   - 您的大部分广告可能都展示在搜索结果页上，但只要机会得当，Google 同样会在其他网站上展示您的广告。[<u>详细了解展示广告和 Google 展示广告网络</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F2404190)
+   - 您的大部分广告可能都展示在搜索结果页上，但只要机会得当，Google 同样会在其他网站上展示您的广告。[<u>详细了解展示广告和 Google 展示广告网络</u>](https://support.google.com/google-ads/answer/2404190)
 3. 您可以选择地理位置选项，以根据用户与所选地理位置之间的关系来优化定位范围。
    - 例如，如果您要推广一场在得克萨斯州奥斯汀市开展的活动，但该活动的参与者主要来自奥斯汀市以外的地方，那么此项设置可能会有所帮助。在这种情况下，您可以选择搜索您定位到的地理位置的用户。
-4. 选择要在哪些地理位置展示您的广告，或者要排除哪些地点。[<u>了解如何将广告定位到特定地理位置</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F1722043)
-   - 如果您要定位到某个较大的区域并希望避开该区域内的某一地点，[<u>排除</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F1722040)功能可能就会派上用场。例如，您可能想要定位除某个特定州或城市之外的整个美国。
+4. 选择要在哪些地理位置展示您的广告，或者要排除哪些地点。[<u>了解如何将广告定位到特定地理位置</u>](https://support.google.com/google-ads/answer/1722043)
+   - 如果您要定位到某个较大的区域并希望避开该区域内的某一地点，[<u>排除</u>](https://support.google.com/google-ads/answer/1722040)功能可能就会派上用场。例如，您可能想要定位除某个特定州或城市之外的整个美国。
    - 如果您的地理位置定位范围过窄，导致预测的点击次数为 0，系统就会提醒您扩大地理位置定位范围。
 
     </td>
@@ -160,7 +160,7 @@
   <tr>
     <td class="border border-slate-200 p-3">
 
-5. 输入您要定位的语言。您要制作的广告和关键字应采用您在此处选择的语言。[<u>详细了解语言定位</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F1722078)
+5. 输入您要定位的语言。您要制作的广告和关键字应采用您在此处选择的语言。[<u>详细了解语言定位</u>](https://support.google.com/google-ads/answer/1722078)
    - 选择自定义关键字匹配方式
    - 关闭自动生成素材
 
@@ -199,7 +199,7 @@
     <td class="border border-slate-200 p-3">
 
 您可以通过以下 2 种方式制作广告组：
-1. <span style="background-color: light-yellow;">标准</span>：输入一组与搜索查询相关的[<u>关键字</u>](https%3A%2F%2Fsupport.google.com%2Fgoogle-ads%2Fanswer%2F1704371)，然后根据这些关键字制作广告。
+1. <span style="background-color: light-yellow;">标准</span>：输入一组与搜索查询相关的[<u>关键字</u>](https://support.google.com/google-ads/answer/1704371)，然后根据这些关键字制作广告。
 2. 动态：Google 会利用您网站上的内容定位合适的搜索查询，并制作广告。
    - 新建系列后进入广告组创建动态搜索广告
 
@@ -542,6 +542,6 @@
 
 
 
-> 💡 **提示**：学完了搜索广告的创建后你是否已经迫不及待的想要上线广告了，咱们赶紧把前面写的搜索广告方案上线上去吧~ [点击进入ads账号链接](https%3A%2F%2Fads.google.com%2Faw%2Foverview%3Focid%3D6958549101%26ascid%3D6958549101%26uscid%3D6923870547%26__c%3D5296929403%26euid%3D1037217585%26__u%3D5731154665%26cmpnInfo%3D%257B%25228%2522%3A%2522ff6df4b8-37fa-4a08-a145-5addd926d10e%2522%257D)（记得先找自己的师傅帮忙授权） 完成测试后，进入咱们最后一块内容的学习：[4.5搜索广告数据分析与优化](https://pwl28kvg7c4.feishu.cn/docx/W9VsdYuRaoPbj9xDlrZcZUJcnoe)
+> 💡 **提示**：学完了搜索广告的创建后你是否已经迫不及待的想要上线广告了，咱们赶紧把前面写的搜索广告方案上线上去吧~ [点击进入ads账号链接](https://ads.google.com/aw/overview?ocid=6958549101&ascid=6958549101&uscid=6923870547&__c=5296929403&euid=1037217585&__u=5731154665&cmpnInfo={"8":"ff6df4b8-37fa-4a08-a145-5addd926d10e"})（记得先找自己的师傅帮忙授权） 完成测试后，进入咱们最后一块内容的学习：[4.5搜索广告数据分析与优化](https://pwl28kvg7c4.feishu.cn/docx/W9VsdYuRaoPbj9xDlrZcZUJcnoe)
 
 

@@ -49,7 +49,7 @@
 - 价格：折后价
 - 品牌名：单个产品的对应品牌，通常为商店名称
 
-具体数据规范可参考Google帮助中心链接：[商品数据规范](https%3A%2F%2Fsupport.google.com%2Fmerchants%2Fanswer%2F7052112%3Fsjid%3D2384847926042998480-NC)、[Google商品类别](https%3A%2F%2Fsupport.google.com%2Fmerchants%2Fanswer%2F6324436%3Fhl%3Den)
+具体数据规范可参考Google帮助中心链接：[商品数据规范](https://support.google.com/merchants/answer/7052112?sjid=2384847926042998480-NC)、[Google商品类别](https://support.google.com/merchants/answer/6324436?hl=en)
 
 <text bgcolor="light-yellow">手工Feed表格模版：</text>[手工feed](https://pwl28kvg7c4.feishu.cn/docx/ZzCCscMHIhGoHZt5Ak5c5t7endc)
 
