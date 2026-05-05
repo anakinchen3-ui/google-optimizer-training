@@ -24,18 +24,55 @@
 
 
 
-| 级别 | 功能 | 规格 |
-|------|------|------|
-| 广告级 | 标题（最多 40 个字符） | 添加一个标题，无论展示哪张卡片都会显示该标题 |
-| | 广告内容描述（最多 90 个字符） | 上传一段广告内容描述，无论展示哪张卡片都会显示该广告内容描述（您无法为每张卡片上传广告内容描述） |
-| | 最终到达网址 | 在界面中提供自动生成的可见网址 |
-| | 商家名称（最多 25 个字符） | 1 个（必需） |
-| 卡片级 | 图片 | 2 到 10 张图片。**横向图片**：宽高比 1.91:1，最小尺寸 600×314，推荐尺寸 1200×628，文件大小上限 5MB；**方形图片**：最小尺寸 300×300，推荐尺寸 1200×1200，文件大小上限 5MB（在 Google 探索中不支持）；**纵向 4:5 图片（可选）**：最小尺寸 480×600，推荐尺寸 960×1200，文件大小上限 5MB。所有卡片的宽高比必须一致 |
-| | 标题（最多 40 个字符） | 请输入在特定卡片上显示的标题（在 Google 探索中不支持，无论显示哪张卡片，都会采用广告级标题） |
-| | 商家名称（最多 25 个字符） | 1 个（必需） |
-| | 方形徽标 | 最多 1 个，尺寸 1:1（必需），最小尺寸 144×144，推荐尺寸 1200×1200，文件大小上限 5120 KB |
-| | 最终到达网址 | 您可以为 YouTube 和 Gmail 上的每张卡片设置特定的着陆页 |
-| | CTA | 建议从下拉列表中选择"自动"选项 |
+<table class="border-collapse w-full">
+  <tr>
+    <th class="border border-slate-200 p-3 text-left">级别</th>
+    <th class="border border-slate-200 p-3 text-left">功能</th>
+    <th class="border border-slate-200 p-3 text-left">规格</th>
+  </tr>
+  <tr>
+    <td rowspan="4" class="border border-slate-200 p-3 align-middle">广告级</td>
+    <td class="border border-slate-200 p-3">标题（最多 40 个字符）</td>
+    <td class="border border-slate-200 p-3">添加一个标题，无论展示哪张卡片都会显示该标题</td>
+  </tr>
+  <tr>
+    <td class="border border-slate-200 p-3">广告内容描述（最多 90 个字符）</td>
+    <td class="border border-slate-200 p-3">上传一段广告内容描述，无论展示哪张卡片都会显示该广告内容描述（您无法为每张卡片上传广告内容描述）</td>
+  </tr>
+  <tr>
+    <td class="border border-slate-200 p-3">最终到达网址</td>
+    <td class="border border-slate-200 p-3">在界面中提供自动生成的可见网址</td>
+  </tr>
+  <tr>
+    <td class="border border-slate-200 p-3">商家名称（最多 25 个字符）</td>
+    <td class="border border-slate-200 p-3">1 个（必需）</td>
+  </tr>
+  <tr>
+    <td rowspan="6" class="border border-slate-200 p-3 align-middle">卡片级</td>
+    <td class="border border-slate-200 p-3">图片</td>
+    <td class="border border-slate-200 p-3">2 到 10 张图片。<strong>横向图片</strong>：宽高比 1.91:1，最小尺寸 600×314，推荐尺寸 1200×628，文件大小上限 5MB；<strong>方形图片</strong>：最小尺寸 300×300，推荐尺寸 1200×1200，文件大小上限 5MB（在 Google 探索中不支持）；<strong>纵向 4:5 图片（可选）</strong>：最小尺寸 480×600，推荐尺寸 960×1200，文件大小上限 5MB。所有卡片的宽高比必须一致</td>
+  </tr>
+  <tr>
+    <td class="border border-slate-200 p-3">标题（最多 40 个字符）</td>
+    <td class="border border-slate-200 p-3">请输入在特定卡片上显示的标题（在 Google 探索中不支持，无论显示哪张卡片，都会采用广告级标题）</td>
+  </tr>
+  <tr>
+    <td class="border border-slate-200 p-3">商家名称（最多 25 个字符）</td>
+    <td class="border border-slate-200 p-3">1 个（必需）</td>
+  </tr>
+  <tr>
+    <td class="border border-slate-200 p-3">方形徽标</td>
+    <td class="border border-slate-200 p-3">最多 1 个，尺寸 1:1（必需），最小尺寸 144×144，推荐尺寸 1200×1200，文件大小上限 5120 KB</td>
+  </tr>
+  <tr>
+    <td class="border border-slate-200 p-3">最终到达网址</td>
+    <td class="border border-slate-200 p-3">您可以为 YouTube 和 Gmail 上的每张卡片设置特定的着陆页</td>
+  </tr>
+  <tr>
+    <td class="border border-slate-200 p-3">CTA</td>
+    <td class="border border-slate-200 p-3">建议从下拉列表中选择"自动"选项</td>
+  </tr>
+</table>
 
 
 
