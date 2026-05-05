@@ -1659,6 +1659,16 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
           else setMindMapMap({});
         })
         .finally(() => setMindMapLoading(false));
+    } else if (lesson.id === 'demand-2') {
+      setMindMapLoading(true);
+      fetch('/content/demand-2/mindmap.json')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null)
+        .then((data) => {
+          if (data) setMindMapMap({ creation: data });
+          else setMindMapMap({});
+        })
+        .finally(() => setMindMapLoading(false));
     } else {
       setMindMapMap({});
     }

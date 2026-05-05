@@ -1,0 +1,110 @@
+{
+  "id": "demand-gen-creation-flow",
+  "label": "Demand Gen 创建流程",
+  "children": [
+    {
+      "id": "prep",
+      "label": "创建前的准备",
+      "children": [
+        {
+          "id": "prep-image",
+          "label": "单图广告",
+          "children": [
+            { "id": "prep-image-1", "label": "最多20张图片（横版、竖版、方版）" },
+            { "id": "prep-image-2", "label": "最多5个标题" },
+            { "id": "prep-image-3", "label": "最多5个广告内容描述" },
+            { "id": "prep-image-4", "label": "至少1个方形Logo" },
+            { "id": "prep-image-5", "label": "提前准备好最终到达网址" }
+          ]
+        },
+        {
+          "id": "prep-carousel",
+          "label": "轮播广告",
+          "children": [
+            { "id": "prep-carousel-1", "label": "3张图片（横版、竖版、方版各一张）" },
+            { "id": "prep-carousel-2", "label": "1条标题" },
+            { "id": "prep-carousel-3", "label": "最终到达网址" }
+          ]
+        },
+        {
+          "id": "prep-video",
+          "label": "视频广告",
+          "children": [
+            { "id": "prep-video-1", "label": "最多5条视频" },
+            { "id": "prep-video-2", "label": "横版和竖版都可" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "campaign",
+      "label": "系列层级设定",
+      "children": [
+        { "id": "campaign-1", "label": "Campaign层级点击"+"号，选择New Campaign" },
+        { "id": "campaign-2", "label": "选择系列目标（销售/网站流量/产品和品牌考虑度/无目标导向）" },
+        { "id": "campaign-3", "label": "设定转化目标（转化次数、点击次数、转化价值）" },
+        { "id": "campaign-4", "label": "选择Demand Gen广告类型" },
+        { "id": "campaign-5", "label": "填写广告系列名称，选择是否带产品Feed" },
+        { "id": "campaign-6", "label": "设定Target Cost Per Action" },
+        { "id": "campaign-7", "label": "预算设定" }
+      ]
+    },
+    {
+      "id": "adgroup",
+      "label": "广告组层级设定",
+      "children": [
+        { "id": "adgroup-1", "label": "填写广告组命名" },
+        { "id": "adgroup-2", "label": "选择产品组（需GMC Feed）" },
+        { "id": "adgroup-3", "label": "选择投放国家、语言" },
+        { "id": "adgroup-4", "label": "添加受众" },
+        { "id": "adgroup-5", "label": "开启优化型定位" }
+      ]
+    },
+    {
+      "id": "ad",
+      "label": "广告层级设定",
+      "children": [
+        {
+          "id": "ad-image",
+          "label": "单图广告",
+          "children": [
+            { "id": "ad-image-1", "label": "填写广告命名" },
+            { "id": "ad-image-2", "label": "添加最终到达网址" },
+            { "id": "ad-image-3", "label": "添加图片素材（横版、竖版、方版）+ 方形Logo" },
+            { "id": "ad-image-4", "label": "添加至多5条标题和5条长描述" },
+            { "id": "ad-image-5", "label": "选择号召性文案，添加商家名称" }
+          ]
+        },
+        {
+          "id": "ad-carousel",
+          "label": "轮播广告",
+          "children": [
+            { "id": "ad-carousel-1", "label": "添加广告命名" },
+            { "id": "ad-carousel-2", "label": "添加最终到达网址" },
+            { "id": "ad-carousel-3", "label": "添加卡片信息（至多10张）" },
+            { "id": "ad-carousel-4", "label": "添加品牌Logo、标题、长描述、商家名称" }
+          ]
+        },
+        {
+          "id": "ad-video",
+          "label": "视频广告",
+          "children": [
+            { "id": "ad-video-1", "label": "填写广告命名和最终到达网址" },
+            { "id": "ad-video-2", "label": "添加YouTube视频（至多5条）" },
+            { "id": "ad-video-3", "label": "添加Logo，视频增强" },
+            { "id": "ad-video-4", "label": "添加文案（标题、长标题、长描述、号召性文案、品牌名）" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "check",
+      "label": "发布前检查",
+      "children": [
+        { "id": "check-1", "label": "检查广告系列命名" },
+        { "id": "check-2", "label": "检查预算、转化目标、出价设置" },
+        { "id": "check-3", "label": "确认无误发布" }
+      ]
+    }
+  ]
+}

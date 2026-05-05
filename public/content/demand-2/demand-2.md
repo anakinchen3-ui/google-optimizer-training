@@ -108,7 +108,7 @@
 
 
 
-![whiteboard](GaRywPHDlh5nc5bfhlzctAVTnzh.jpg)
+<!-- mindmap:creation -->
 
 
 
