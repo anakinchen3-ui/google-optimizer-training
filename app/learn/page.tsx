@@ -1702,7 +1702,7 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
   }
 
   if (lesson.renderAs === 'markdown' || lesson.renderAs === 'html') {
-    if (loading) {
+    if (loading || mindMapLoading) {
       return (
         <div className="flex-1 flex items-center justify-center bg-slate-50">
           <svg className="animate-spin h-6 w-6 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
