@@ -40,7 +40,7 @@
       "id": "campaign",
       "label": "系列层级设定",
       "children": [
-        { "id": "campaign-1", "label": "Campaign层级点击"+"号，选择New Campaign" },
+        { "id": "campaign-1", "label": "Campaign层级点击\"+\"号，选择New Campaign" },
         { "id": "campaign-2", "label": "选择系列目标（销售/网站流量/产品和品牌考虑度/无目标导向）" },
         { "id": "campaign-3", "label": "设定转化目标（转化次数、点击次数、转化价值）" },
         { "id": "campaign-4", "label": "选择Demand Gen广告类型" },
