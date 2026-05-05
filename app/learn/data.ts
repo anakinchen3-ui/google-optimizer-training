@@ -19,6 +19,39 @@ export interface Section {
 
 export const courseData: Section[] = [
   {
+    id: 'extra',
+    title: '其他培训资料',
+    lessons: [
+      {
+        id: 'extra-1',
+        title: '2025年 Google 优化师培训流程',
+        type: 'docx',
+        url: '/content/extra-1/extra-1.md',
+    renderAs: 'markdown',
+      },
+      {
+        id: 'extra-2',
+        title: 'google 分享内容安排',
+        type: 'sheet',
+        url: '/content/extra/extra-2.png',
+        renderAs: 'image',
+      },
+      {
+        id: 'extra-3',
+        title: '2025 网站布局培训',
+        type: 'slides',
+        url: '/content/extra/extra-3.png',
+        renderAs: 'image',
+      },
+      {
+        id: 'extra-4',
+        title: 'Google 广告账户前期设置与关联',
+        type: 'folder',
+        url: 'https://pwl28kvg7c4.feishu.cn/drive/folder/TkOPfI8B4lwKUmdDVficI2Eansb',
+      },
+    ],
+  },
+  {
     id: 'foundation',
     title: '基础认知阶段',
     lessons: [
@@ -291,39 +324,6 @@ export const courseData: Section[] = [
     renderAs: 'markdown',
           },
         ],
-      },
-    ],
-  },
-  {
-    id: 'extra',
-    title: '其他培训资料',
-    lessons: [
-      {
-        id: 'extra-1',
-        title: '2025年 Google 优化师培训流程',
-        type: 'docx',
-        url: '/content/extra-1/extra-1.md',
-    renderAs: 'markdown',
-      },
-      {
-        id: 'extra-2',
-        title: 'google 分享内容安排',
-        type: 'sheet',
-        url: '/content/extra/extra-2.png',
-        renderAs: 'image',
-      },
-      {
-        id: 'extra-3',
-        title: '2025 网站布局培训',
-        type: 'slides',
-        url: '/content/extra/extra-3.png',
-        renderAs: 'image',
-      },
-      {
-        id: 'extra-4',
-        title: 'Google 广告账户前期设置与关联',
-        type: 'folder',
-        url: 'https://pwl28kvg7c4.feishu.cn/drive/folder/TkOPfI8B4lwKUmdDVficI2Eansb',
       },
     ],
   },

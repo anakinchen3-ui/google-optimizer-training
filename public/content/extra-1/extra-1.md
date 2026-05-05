@@ -9,9 +9,9 @@
 
 ### 一、了解艾维企业文化：
 
-[致艾维人的一封信](https://qq1ar19am8r.feishu.cn/docx/YATcdrxWEoPIXqx8rGTcyiGAnof)（点击进入）
+<button data-modal="letter" class="modal-trigger">致艾维人的一封信（点击进入）</button>
 
-[艾维公司介绍](https://pwl28kvg7c4.feishu.cn/docx/ZPFTdOtVYobXfXxXgkdcnwQjndc)（点击进入）
+<button data-modal="intro" class="modal-trigger">艾维公司介绍（点击进入）</button>
 
 ### 二、申请企业邮箱、注册飞书帐号
 

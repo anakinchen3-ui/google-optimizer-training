@@ -1562,7 +1562,7 @@ function FAQPanel({ user }: { user: User }) {
   );
 }
 
-function ContentRenderer({ lesson }: { lesson: Lesson }) {
+function ContentRenderer({ lesson, onModalOpen }: { lesson: Lesson; onModalOpen?: (key: string) => void }) {
   const [content, setContent] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [mindMapMap, setMindMapMap] = useState<Record<string, MindMapNode>>({});
@@ -1767,18 +1767,33 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
         mindmapPlaceholderRegex.lastIndex = 0;
       }
 
+      const handleClick = (e: React.MouseEvent) => {
+        const target = (e.target as HTMLElement).closest('[data-modal]');
+        if (target && onModalOpen) {
+          onModalOpen(target.getAttribute('data-modal')!);
+        }
+      };
+
       return (
         <div className="flex-1 overflow-auto bg-white p-8">
-          <div className="max-w-4xl mx-auto markdown-body">{parts}</div>
+          <div className="max-w-4xl mx-auto markdown-body" onClick={handleClick}>{parts}</div>
         </div>
       );
     }
+
+    const handleClick = (e: React.MouseEvent) => {
+      const target = (e.target as HTMLElement).closest('[data-modal]');
+      if (target && onModalOpen) {
+        onModalOpen(target.getAttribute('data-modal')!);
+      }
+    };
 
     return (
       <div className="flex-1 overflow-auto bg-white p-8">
         <div
           className="max-w-4xl mx-auto markdown-body"
           dangerouslySetInnerHTML={{ __html: content }}
+          onClick={handleClick}
         />
       </div>
     );
@@ -1807,6 +1822,10 @@ export default function LearnPage() {
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
+
+  const [docModalOpen, setDocModalOpen] = useState(false);
+  const [docModalTitle, setDocModalTitle] = useState('');
+  const [docModalContent, setDocModalContent] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -1873,6 +1892,27 @@ export default function LearnPage() {
   const handleLogout = useCallback(() => {
     setUser(null);
     localStorage.removeItem(USER_KEY);
+  }, []);
+
+  const openDocModal = useCallback(async (key: string) => {
+    const url = key === 'letter' ? '/content/extra-1/letter.md' : '/content/extra-1/company-intro.md';
+    const title = key === 'letter' ? '致艾维人的一封信' : '艾维公司介绍';
+    const res = await fetch(url);
+    const text = await res.text();
+    let html = marked.parse(text, { async: false }) as string;
+    const basePath = url.substring(0, url.lastIndexOf('/') + 1);
+    html = html.replace(
+      /<img([^>]+)src="([^"]+)"([^>]*)>/g,
+      (match, before, src, after) => {
+        if (src.startsWith('http') || src.startsWith('/') || src.startsWith('data:')) {
+          return match;
+        }
+        return `<img${before}src="${basePath}${src}"${after}>`;
+      }
+    );
+    setDocModalTitle(title);
+    setDocModalContent(html);
+    setDocModalOpen(true);
   }, []);
 
   const activeLesson = getLessonById(activeId);
@@ -2178,7 +2218,7 @@ export default function LearnPage() {
                         </a>
                       )}
                     </div>
-                    <ContentRenderer lesson={activeLesson} />
+                    <ContentRenderer lesson={activeLesson} onModalOpen={openDocModal} />
                   </div>
                 )
               ) : (
@@ -2195,6 +2235,24 @@ export default function LearnPage() {
               )}
             </main>
           </>
+        )}
+
+        {/* Doc Modal */}
+        {docModalOpen && (
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={() => setDocModalOpen(false)}>
+            <div className="bg-white rounded-2xl shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden" onClick={(e) => e.stopPropagation()}>
+              <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+                <h3 className="text-lg font-semibold text-slate-900">{docModalTitle}</h3>
+                <button onClick={() => setDocModalOpen(false)} className="text-slate-400 hover:text-slate-600">
+                  <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+              </div>
+              <div className="p-6 overflow-auto markdown-body" dangerouslySetInnerHTML={{ __html: docModalContent }} />
+            </div>
+          </div>
         )}
 
         {activeTab === 'exam' && <ExamPanel />}
