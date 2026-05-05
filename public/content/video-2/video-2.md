@@ -156,7 +156,7 @@
 
 
 
-![whiteboard](QZihwVt6Vh6wUIbLjQgco0txnAh.jpg)
+<!-- mindmap:reach -->
 
 
 

@@ -1669,6 +1669,16 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
           else setMindMapMap({});
         })
         .finally(() => setMindMapLoading(false));
+    } else if (lesson.id === 'video-2') {
+      setMindMapLoading(true);
+      fetch('/content/video-2/mindmap-reach.json')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null)
+        .then((data) => {
+          if (data) setMindMapMap({ reach: data });
+          else setMindMapMap({});
+        })
+        .finally(() => setMindMapLoading(false));
     } else {
       setMindMapMap({});
     }
