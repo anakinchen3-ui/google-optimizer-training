@@ -186,3 +186,59 @@ body {
   padding: 0;
   font-size: 0.875em;
 }
+
+.markdown-body details {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  background-color: #f8fafc;
+  overflow: hidden;
+}
+
+.markdown-body summary {
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  background-color: #f1f5f9;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.2s;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.markdown-body summary::-webkit-details-marker {
+  display: none;
+}
+
+.markdown-body summary::before {
+  content: '▸';
+  font-size: 1rem;
+  color: #64748b;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+
+.markdown-body details[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.markdown-body details[open] summary {
+  border-bottom-color: #e2e8f0;
+  background-color: #e2e8f0;
+}
+
+.markdown-body summary:hover {
+  background-color: #e2e8f0;
+}
+
+.markdown-body details > *:not(summary) {
+  padding: 0 1rem;
+}
+
+.markdown-body details[open] > *:not(summary) {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}

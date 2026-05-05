@@ -50,8 +50,8 @@ Google 购物广告（Shopping Ads）是一种基于产品信息的广告形式�
 **一句话理解，能直接面向C端消费者按数量购买的商品，且符合购物广告政策的，均可以投放购物广告，以下品类除外：**
 
 
+![img](购物广告适用场景.png)
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/EsGjsSVx4h9bUPtMbffcfR2UnXc_OMasir) 查看原表格（建议截图替换为本地图片）
 
 
 
@@ -66,7 +66,7 @@ Google 购物广告（Shopping Ads）是一种基于产品信息的广告形式�
 **购物广告与搜索广告的区别如下：**
 
 
+![img](购物广告与搜索的区别.png)
 
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/EsGjsSVx4h9bUPtMbffcfR2UnXc_yEEvFK) 查看原表格（建议截图替换为本地图片）
 
 

@@ -112,9 +112,10 @@
 
 
 
-##### 后台SOP截图
+<details>
+<summary>后台SOP截图（点击展开）</summary>
 
-###### Campaign层级点击“+”号，选择New Campaign
+###### Campaign层级点击”+”号，选择New Campaign
 
 
 
@@ -306,6 +307,8 @@
 
 
 ![img](QcbwbLaQho2kVjxxuXWcTTq7nU0.png)
+
+</details>
 
 
 

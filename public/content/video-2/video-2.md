@@ -160,9 +160,10 @@
 
 
 
-##### 创建视频覆盖面广告系列 （SOP）
+<details>
+<summary>创建视频覆盖面广告系列 （SOP）点击展开</summary>
 
-###### Campaign层级点击“+”号，选择New Campaign
+###### Campaign层级点击”+”号，选择New Campaign
 
 
 
@@ -226,7 +227,7 @@
 
 ![img](M2ZAbTfPioOSzKxuwsOcunibnNM.png)
 
-
+</details>
 
 ### 创建视频观看广告系列（含上线思维导图及SOP)
 
@@ -271,9 +272,10 @@
 
 
 
-##### 创建视频观看广告系列 （SOP）
+<details>
+<summary>创建视频观看广告系列 （SOP）点击展开</summary>
 
-###### Campaign层级点击“+”号，选择New Campaign
+###### Campaign层级点击”+”号，选择New Campaign
 
 
 
@@ -301,7 +303,7 @@
 
 
 
-###### 广告系列层级设置：输入广告系列名称，建议启用多格式广告，出价策略自动选择“目标每次观看费用”。
+###### 广告系列层级设置：输入广告系列名称，建议启用多格式广告，出价策略自动选择”目标每次观看费用”。
 
 
 
@@ -355,4 +357,5 @@
 
 ![img](FetRbkgJ3o1mUIx36NocPv44nah.png)
 
+</details>
 

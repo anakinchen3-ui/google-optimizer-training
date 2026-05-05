@@ -22,9 +22,7 @@ Google Merchant Center，简称GMC，商家可以上传他们的产品数据（�
 - Feed的质量直接影响广告的相关性和表现。
 - Feed的核心字段：
 
-
-
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/QedssdswchTQkNtmv8OcB5FCn2g_ei9E31) 查看原表格（建议截图替换为本地图片）
+![img](feed字段.png)
 
 
 
@@ -101,8 +99,7 @@ Google Merchant Center，简称GMC，商家可以上传他们的产品数据（�
 1. **Feed字段完整性**
 
 
-
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/QedssdswchTQkNtmv8OcB5FCn2g_papBYf) 查看原表格（建议截图替换为本地图片）
+![img](feed完整性.png)
 
 
 
@@ -157,9 +154,7 @@ Google Merchant Center，简称GMC，商家可以上传他们的产品数据（�
 ####### **五、GMC审核常见拒登原因与解决方案**
 
 
-
-> 📊 表格内容：点击 [此处](https://pwl28kvg7c4.feishu.cn/sheets/QedssdswchTQkNtmv8OcB5FCn2g_o7soDu) 查看原表格（建议截图替换为本地图片）
-
+![img](GMC被封原因.png)
 
 
 **总结**：GMC审核核心在于**数据真实性、网站透明性、政策合规性**。严格遵循这些要求，可大幅提升过审率。若首次被拒，务必根据拒登原因逐条修正后重新提交！
