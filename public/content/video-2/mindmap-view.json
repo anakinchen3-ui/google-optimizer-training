@@ -1,0 +1,53 @@
+{
+  "id": "video-view-creation-flow",
+  "label": "视频观看广告系列创建流程",
+  "children": [
+    {
+      "id": "prep",
+      "label": "创建前的准备",
+      "children": [
+        { "id": "prep-1", "label": "确定需要投放的落地页及相关视频准备，至多5个" },
+        { "id": "prep-2", "label": "提前准备/规划受众设置" },
+        { "id": "prep-3", "label": "提前准备好1句广告长标题（90个字符）和1句描述（90个字符）" }
+      ]
+    },
+    {
+      "id": "campaign",
+      "label": "系列层级设定",
+      "children": [
+        { "id": "campaign-1", "label": "Campaign层级点击\"+\"号，选择New Campaign" },
+        { "id": "campaign-2", "label": "选择系列目标（产品和品牌考虑度）" },
+        { "id": "campaign-3", "label": "选择Video广告系列类型，选择视频观看作为广告系列子类型" },
+        { "id": "campaign-4", "label": "输入广告系列名称，建议启用多格式广告，出价策略自动选择\"目标每次观看费用\"" },
+        { "id": "campaign-5", "label": "设置系列预算，投放地理位置，预算，GMC Feed（可选）" }
+      ]
+    },
+    {
+      "id": "adgroup",
+      "label": "广告组层级设定",
+      "children": [
+        { "id": "adgroup-1", "label": "填写广告组命名（建议包含素材类型、受众、创建时长）" },
+        { "id": "adgroup-2", "label": "添加受众（Demographics/Interests/Your data/Custom search terms/排除受众等）" },
+        { "id": "adgroup-3", "label": "选择是否进行受众拓展" },
+        { "id": "adgroup-4", "label": "设置Content: where you want your ads to show" }
+      ]
+    },
+    {
+      "id": "ad",
+      "label": "广告设定",
+      "children": [
+        { "id": "ad-1", "label": "添加Youtube link（至多5个）" },
+        { "id": "ad-2", "label": "添加最终到达网址" },
+        { "id": "ad-3", "label": "添加文案（1个长标题和1个描述）" },
+        { "id": "ad-4", "label": "设置广告名称，设置出价，创建完成" }
+      ]
+    },
+    {
+      "id": "check",
+      "label": "发布前反复检查",
+      "children": [
+        { "id": "check-1", "label": "点击创建即完成系列创建" }
+      ]
+    }
+  ]
+}

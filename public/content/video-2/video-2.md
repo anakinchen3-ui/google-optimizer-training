@@ -267,7 +267,7 @@
 
 
 
-![whiteboard](Bespwv69IhKti4bm2QScwInpnEg.jpg)
+<!-- mindmap:view -->
 
 
 

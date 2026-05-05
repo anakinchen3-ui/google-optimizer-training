@@ -1671,13 +1671,21 @@ function ContentRenderer({ lesson }: { lesson: Lesson }) {
         .finally(() => setMindMapLoading(false));
     } else if (lesson.id === 'video-2') {
       setMindMapLoading(true);
-      fetch('/content/video-2/mindmap-reach.json')
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null)
-        .then((data) => {
-          if (data) setMindMapMap({ reach: data });
-          else setMindMapMap({});
+      Promise.all([
+        fetch('/content/video-2/mindmap-reach.json')
+          .then((r) => (r.ok ? r.json() : null))
+          .catch(() => null),
+        fetch('/content/video-2/mindmap-view.json')
+          .then((r) => (r.ok ? r.json() : null))
+          .catch(() => null),
+      ])
+        .then(([reach, view]) => {
+          const map: Record<string, MindMapNode> = {};
+          if (reach) map['reach'] = reach;
+          if (view) map['view'] = view;
+          setMindMapMap(map);
         })
+        .catch(() => setMindMapMap({}))
         .finally(() => setMindMapLoading(false));
     } else {
       setMindMapMap({});
