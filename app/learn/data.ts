@@ -30,13 +30,6 @@ export const courseData: Section[] = [
     renderAs: 'markdown',
       },
       {
-        id: 'extra-2',
-        title: 'google 分享内容安排',
-        type: 'sheet',
-        url: '/content/extra/extra-2.png',
-        renderAs: 'image',
-      },
-      {
         id: 'extra-3',
         title: '2025 网站布局培训',
         type: 'slides',

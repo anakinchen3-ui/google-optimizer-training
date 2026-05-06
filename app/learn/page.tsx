@@ -37,7 +37,7 @@ interface HomeworkSubmission {
   scoredAt?: string;
 }
 
-type TabKey = 'learn' | 'exam' | 'homework' | 'reflection' | 'faq' | 'users' | 'assessment' | 'schedule';
+type TabKey = 'learn' | 'exam' | 'homework' | 'sharing' | 'reflection' | 'faq' | 'users' | 'assessment' | 'schedule';
 
 function getIconByType(type: LessonType) {
   switch (type) {
@@ -1078,6 +1078,424 @@ function UserManagementPanel({ user }: { user: User }) {
   );
 }
 
+interface SharingSchedule {
+  id: string;
+  date: string;
+  time: string;
+  topic: string;
+  sharer: string;
+  createdAt: string;
+}
+
+interface SharingReflection {
+  id: string;
+  sharingId: string;
+  userId: string;
+  userName: string;
+  content: string;
+  createdAt: string;
+}
+
+function SharingPanel({ user }: { user: User }) {
+  const isMentorOrAdmin = user.role === 'mentor' || user.role === 'admin';
+  const [schedules, setSchedules] = useState<SharingSchedule[]>([]);
+  const [reflections, setReflections] = useState<SharingReflection[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+
+  // Student submit modal
+  const [submitModalOpen, setSubmitModalOpen] = useState(false);
+  const [selectedSchedule, setSelectedSchedule] = useState<SharingSchedule | null>(null);
+  const [reflectionContent, setReflectionContent] = useState('');
+
+  // Mentor view reflections modal
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [viewingSchedule, setViewingSchedule] = useState<SharingSchedule | null>(null);
+  const [viewReflections, setViewReflections] = useState<SharingReflection[]>([]);
+  const [viewLoading, setViewLoading] = useState(false);
+
+  // Mentor add schedule modal
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [newDate, setNewDate] = useState('');
+  const [newTime, setNewTime] = useState('');
+  const [newTopic, setNewTopic] = useState('');
+  const [newSharer, setNewSharer] = useState('');
+
+  const fetchSchedules = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/sharing/schedule');
+      const data = await res.json();
+      if (data.ok && data.data) {
+        setSchedules(data.data);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchAllReflections = useCallback(async () => {
+    try {
+      const res = await fetch('/api/sharing/reflection');
+      const data = await res.json();
+      if (data.ok && data.data) {
+        setReflections(data.data);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSchedules();
+    fetchAllReflections();
+  }, [fetchSchedules, fetchAllReflections]);
+
+  const getMyReflection = (scheduleId: string) =>
+    reflections.find((r) => r.sharingId === scheduleId && r.userId === user.user_id);
+
+  const openSubmit = (schedule: SharingSchedule) => {
+    setSelectedSchedule(schedule);
+    const existing = getMyReflection(schedule.id);
+    setReflectionContent(existing ? existing.content : '');
+    setSubmitModalOpen(true);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!selectedSchedule || !reflectionContent.trim()) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch('/api/sharing/reflection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sharingId: selectedSchedule.id,
+          userId: user.user_id,
+          userName: user.name,
+          content: reflectionContent.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setSubmitModalOpen(false);
+        await fetchAllReflections();
+      } else {
+        alert(data.error || '提交失败');
+      }
+    } catch {
+      alert('网络错误，请重试');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const openView = async (schedule: SharingSchedule) => {
+    setViewingSchedule(schedule);
+    setViewModalOpen(true);
+    setViewLoading(true);
+    try {
+      const res = await fetch(`/api/sharing/reflection?sharingId=${encodeURIComponent(schedule.id)}`);
+      const data = await res.json();
+      if (data.ok && data.data) {
+        setViewReflections(data.data);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setViewLoading(false);
+    }
+  };
+
+  const handleAddSchedule = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newDate || !newTime || !newTopic.trim() || !newSharer.trim()) return;
+    try {
+      const res = await fetch('/api/sharing/schedule', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          date: newDate,
+          time: newTime,
+          topic: newTopic.trim(),
+          sharer: newSharer.trim(),
+          createdBy: user.user_id,
+          role: user.role,
+        }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setAddModalOpen(false);
+        setNewDate('');
+        setNewTime('');
+        setNewTopic('');
+        setNewSharer('');
+        await fetchSchedules();
+      } else {
+        alert(data.error || '添加失败');
+      }
+    } catch {
+      alert('网络错误，请重试');
+    }
+  };
+
+  return (
+    <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-slate-50">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900 mb-1">分享安排</h2>
+            <p className="text-slate-500">{isMentorOrAdmin ? '管理团队分享日程，查看学员心得。' : '查看分享安排并上传学习心得。'}</p>
+          </div>
+          {isMentorOrAdmin && (
+            <button
+              onClick={() => setAddModalOpen(true)}
+              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              新增分享
+            </button>
+          )}
+        </div>
+
+        {loading && schedules.length === 0 && (
+          <div className="text-center py-12">
+            <svg className="animate-spin h-6 w-6 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p className="text-sm text-slate-500 mt-2">加载中...</p>
+          </div>
+        )}
+
+        {schedules.length === 0 && !loading && (
+          <div className="text-center py-16 bg-white rounded-xl border border-slate-200">
+            <p className="text-slate-400 text-sm">暂无分享安排</p>
+          </div>
+        )}
+
+        <div className="space-y-4">
+          {schedules.map((s) => {
+            const myReflection = getMyReflection(s.id);
+            const reflectionCount = reflections.filter((r) => r.sharingId === s.id).length;
+            return (
+              <div key={s.id} className="bg-white rounded-xl border border-slate-200 p-5">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="font-semibold text-slate-900">{s.topic}</h3>
+                      {myReflection && !isMentorOrAdmin && (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-green-100 text-green-700">已提交心得</span>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
+                      <span className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                          <line x1="16" y1="2" x2="16" y2="6" />
+                          <line x1="8" y1="2" x2="8" y2="6" />
+                          <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        {s.date} {s.time}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                          <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        分享人：{s.sharer}
+                      </span>
+                      {isMentorOrAdmin && (
+                        <span className="text-xs text-slate-400">{reflectionCount} 条心得</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {isMentorOrAdmin ? (
+                      <button
+                        onClick={() => openView(s)}
+                        className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        查看心得
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => openSubmit(s)}
+                        className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        {myReflection ? '重新编辑' : '上传心得'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Student submit modal */}
+      {submitModalOpen && selectedSchedule && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-lg p-6 shadow-xl">
+            <h3 className="text-lg font-semibold text-slate-900 mb-2">
+              上传心得：{selectedSchedule.topic}
+            </h3>
+            <p className="text-sm text-slate-500 mb-4">
+              {selectedSchedule.date} {selectedSchedule.time} · 分享人：{selectedSchedule.sharer}
+            </p>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <textarea
+                value={reflectionContent}
+                onChange={(e) => setReflectionContent(e.target.value)}
+                placeholder="写下你的学习心得..."
+                rows={6}
+                className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm resize-none"
+                required
+              />
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setSubmitModalOpen(false)}
+                  className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  取消
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-60 transition-colors"
+                >
+                  {submitting ? '提交中...' : '提交'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Mentor view reflections modal */}
+      {viewModalOpen && viewingSchedule && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-2xl p-6 shadow-xl max-h-[80vh] flex flex-col">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900">{viewingSchedule.topic}</h3>
+                <p className="text-sm text-slate-500">
+                  {viewingSchedule.date} {viewingSchedule.time} · 分享人：{viewingSchedule.sharer}
+                </p>
+              </div>
+              <button
+                onClick={() => setViewModalOpen(false)}
+                className="text-slate-400 hover:text-slate-600"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              {viewLoading ? (
+                <div className="text-center py-8">
+                  <svg className="animate-spin h-5 w-5 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                </div>
+              ) : viewReflections.length === 0 ? (
+                <p className="text-center text-sm text-slate-400 py-8">暂无学员心得</p>
+              ) : (
+                <div className="space-y-3">
+                  {viewReflections.map((r) => (
+                    <div key={r.id} className="bg-slate-50 rounded-lg p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="font-medium text-sm text-slate-900">{r.userName}</span>
+                        <span className="text-xs text-slate-400">{new Date(r.createdAt).toLocaleString('zh-CN')}</span>
+                      </div>
+                      <p className="text-sm text-slate-700 whitespace-pre-wrap">{r.content}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mentor add schedule modal */}
+      {addModalOpen && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl w-full max-w-lg p-6 shadow-xl">
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">新增分享安排</h3>
+            <form onSubmit={handleAddSchedule} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">日期</label>
+                  <input
+                    type="date"
+                    value={newDate}
+                    onChange={(e) => setNewDate(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">时间</label>
+                  <input
+                    type="time"
+                    value={newTime}
+                    onChange={(e) => setNewTime(e.target.value)}
+                    className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    required
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">分享主题</label>
+                <input
+                  type="text"
+                  value={newTopic}
+                  onChange={(e) => setNewTopic(e.target.value)}
+                  placeholder="例如：搜索广告优化实战"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">分享人</label>
+                <input
+                  type="text"
+                  value={newSharer}
+                  onChange={(e) => setNewSharer(e.target.value)}
+                  placeholder="例如：张三"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  required
+                />
+              </div>
+              <div className="flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setAddModalOpen(false)}
+                  className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  取消
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  添加
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface Reflection {
   id: string;
   topic: string;
@@ -1995,6 +2413,7 @@ export default function LearnPage() {
     { key: 'exam', label: '考试' },
     { key: 'homework', label: '作业' },
     { key: 'schedule', label: '培训时间' },
+    { key: 'sharing', label: '分享' },
     { key: 'reflection', label: '学习心得' },
     { key: 'faq', label: 'FAQ' },
     ...(isMentorOrAdmin ? [{ key: 'assessment' as TabKey, label: '考核' }] : []),
@@ -2268,6 +2687,7 @@ export default function LearnPage() {
         {activeTab === 'exam' && <ExamPanel />}
         {activeTab === 'homework' && user && <HomeworkPanel user={user} />}
         {activeTab === 'schedule' && user && <TrainingSchedulePanel user={user} />}
+        {activeTab === 'sharing' && user && <SharingPanel user={user} />}
         {activeTab === 'assessment' && isMentorOrAdmin && <AssessmentPanel />}
         {activeTab === 'users' && user && user.role === 'admin' && <UserManagementPanel user={user} />}
         {activeTab === 'reflection' && <ReflectionPanel userName={user.name} />}
