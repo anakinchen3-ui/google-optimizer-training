@@ -1084,6 +1084,8 @@ interface SharingSchedule {
   time: string;
   topic: string;
   sharer: string;
+  materialName?: string;
+  materialUrl?: string;
   createdAt: string;
 }
 
@@ -1120,6 +1122,9 @@ function SharingPanel({ user }: { user: User }) {
   const [newTime, setNewTime] = useState('');
   const [newTopic, setNewTopic] = useState('');
   const [newSharer, setNewSharer] = useState('');
+  const [newMaterialName, setNewMaterialName] = useState('');
+  const [newMaterialUrl, setNewMaterialUrl] = useState('');
+  const [editingSchedule, setEditingSchedule] = useState<SharingSchedule | null>(null);
 
   const fetchSchedules = useCallback(async () => {
     setLoading(true);
@@ -1209,32 +1214,58 @@ function SharingPanel({ user }: { user: User }) {
     }
   };
 
+  const resetForm = () => {
+    setNewDate('');
+    setNewTime('');
+    setNewTopic('');
+    setNewSharer('');
+    setNewMaterialName('');
+    setNewMaterialUrl('');
+    setEditingSchedule(null);
+  };
+
+  const openAdd = () => {
+    resetForm();
+    setAddModalOpen(true);
+  };
+
+  const openEdit = (schedule: SharingSchedule) => {
+    setEditingSchedule(schedule);
+    setNewDate(schedule.date);
+    setNewTime(schedule.time);
+    setNewTopic(schedule.topic);
+    setNewSharer(schedule.sharer);
+    setNewMaterialName(schedule.materialName || '');
+    setNewMaterialUrl(schedule.materialUrl || '');
+    setAddModalOpen(true);
+  };
+
   const handleAddSchedule = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newDate || !newTime || !newTopic.trim() || !newSharer.trim()) return;
     try {
+      const isEdit = editingSchedule !== null;
       const res = await fetch('/api/sharing/schedule', {
-        method: 'POST',
+        method: isEdit ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          ...(isEdit ? { id: editingSchedule.id } : { createdBy: user.user_id }),
           date: newDate,
           time: newTime,
           topic: newTopic.trim(),
           sharer: newSharer.trim(),
-          createdBy: user.user_id,
+          materialName: newMaterialName.trim(),
+          materialUrl: newMaterialUrl.trim(),
           role: user.role,
         }),
       });
       const data = await res.json();
       if (data.ok) {
         setAddModalOpen(false);
-        setNewDate('');
-        setNewTime('');
-        setNewTopic('');
-        setNewSharer('');
+        resetForm();
         await fetchSchedules();
       } else {
-        alert(data.error || '添加失败');
+        alert(data.error || (isEdit ? '更新失败' : '添加失败'));
       }
     } catch {
       alert('网络错误，请重试');
@@ -1251,7 +1282,7 @@ function SharingPanel({ user }: { user: User }) {
           </div>
           {isMentorOrAdmin && (
             <button
-              onClick={() => setAddModalOpen(true)}
+              onClick={openAdd}
               className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
             >
               新增分享
@@ -1309,16 +1340,37 @@ function SharingPanel({ user }: { user: User }) {
                       {isMentorOrAdmin && (
                         <span className="text-xs text-slate-400">{reflectionCount} 条心得</span>
                       )}
+                      {s.materialUrl && (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-100 text-purple-700">有资料</span>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
-                    {isMentorOrAdmin ? (
-                      <button
-                        onClick={() => openView(s)}
-                        className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                    {s.materialUrl && (
+                      <a
+                        href={s.materialUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-lg hover:bg-purple-700 transition-colors"
                       >
-                        查看心得
-                      </button>
+                        查看资料
+                      </a>
+                    )}
+                    {isMentorOrAdmin ? (
+                      <>
+                        <button
+                          onClick={() => openView(s)}
+                          className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                        >
+                          查看心得
+                        </button>
+                        <button
+                          onClick={() => openEdit(s)}
+                          className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+                        >
+                          编辑
+                        </button>
+                      </>
                     ) : (
                       <button
                         onClick={() => openSubmit(s)}
@@ -1427,7 +1479,9 @@ function SharingPanel({ user }: { user: User }) {
       {addModalOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl w-full max-w-lg p-6 shadow-xl">
-            <h3 className="text-lg font-semibold text-slate-900 mb-4">新增分享安排</h3>
+            <h3 className="text-lg font-semibold text-slate-900 mb-4">
+              {editingSchedule ? '编辑分享安排' : '新增分享安排'}
+            </h3>
             <form onSubmit={handleAddSchedule} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -1473,10 +1527,31 @@ function SharingPanel({ user }: { user: User }) {
                   required
                 />
               </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">资料名称</label>
+                <input
+                  type="text"
+                  value={newMaterialName}
+                  onChange={(e) => setNewMaterialName(e.target.value)}
+                  placeholder="例如：搜索广告优化PPT"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">资料链接</label>
+                <input
+                  type="url"
+                  value={newMaterialUrl}
+                  onChange={(e) => setNewMaterialUrl(e.target.value)}
+                  placeholder="粘贴飞书文档、网盘或其他链接"
+                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                />
+                <p className="text-xs text-slate-400 mt-1">支持飞书文档、云盘链接等任意 URL</p>
+              </div>
               <div className="flex items-center justify-end gap-3">
                 <button
                   type="button"
-                  onClick={() => setAddModalOpen(false)}
+                  onClick={() => { setAddModalOpen(false); resetForm(); }}
                   className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
                 >
                   取消
@@ -1485,7 +1560,7 @@ function SharingPanel({ user }: { user: User }) {
                   type="submit"
                   className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  添加
+                  {editingSchedule ? '保存' : '添加'}
                 </button>
               </div>
             </form>
