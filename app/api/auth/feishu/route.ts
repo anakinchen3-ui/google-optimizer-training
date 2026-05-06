@@ -98,7 +98,7 @@ export async function POST(request: Request) {
     const userId = user.user_id || user.open_id;
 
     const kvRoles: Record<string, 'admin' | 'mentor' | 'student'> = (await kv.get(KV_KEY)) || {};
-    const role = kvRoles[userId] ?? FALLBACK_ROLE_MAP[userId] ?? 'student';
+    const role = kvRoles[userId] ?? FALLBACK_ROLE_MAP[userId] ?? 'pending';
 
     // Save user profile mapping for display in admin panel
     const profiles: Record<string, string> = (await kv.get(PROFILE_KEY)) || {};

@@ -12,7 +12,7 @@ const REFLECTION_KEY = 'google-learn-reflections-v1';
 const APP_ID = 'cli_a954b3694f381cb0';
 const REDIRECT_URI = process.env.NEXT_PUBLIC_REDIRECT_URI || 'https://google-optimizer-training.vercel.app/learn';
 
-export type UserRole = 'admin' | 'mentor' | 'student';
+export type UserRole = 'admin' | 'mentor' | 'student' | 'pending';
 
 export interface User {
   user_id: string;
@@ -80,6 +80,8 @@ function getRoleLabel(role: UserRole) {
       return '导师';
     case 'student':
       return '学员';
+    case 'pending':
+      return '待授权';
   }
 }
 
@@ -91,6 +93,8 @@ function getRoleBadgeColor(role: UserRole) {
       return 'bg-blue-100 text-blue-700';
     case 'student':
       return 'bg-slate-100 text-slate-600';
+    case 'pending':
+      return 'bg-amber-100 text-amber-700';
   }
 }
 
@@ -141,6 +145,100 @@ function LoginScreen() {
         </button>
 
         <p className="text-xs text-slate-400 mt-6">若无法登录，请联系管理员开通权限</p>
+      </div>
+    </div>
+  );
+}
+
+function PendingScreen({ user, onLogout }: { user: User; onLogout: () => void }) {
+  const [copied, setCopied] = useState(false);
+
+  const copyUserId = () => {
+    navigator.clipboard.writeText(user.user_id).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  return (
+    <div className="min-h-screen w-full bg-slate-50 flex items-center justify-center p-6">
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 text-center">
+        <div className="w-16 h-16 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 mx-auto mb-6">
+          <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+        </div>
+        <h1 className="text-xl font-bold text-slate-900 mb-2">等待管理员授权</h1>
+        <p className="text-sm text-slate-500 mb-6">
+          你的飞书账号已成功登录，但尚未获得系统访问权限。
+        </p>
+
+        <div className="bg-slate-50 rounded-xl border border-slate-200 p-5 mb-6 text-left">
+          <div className="flex items-center gap-3 mb-4">
+            {user.avatar ? (
+              <img src={user.avatar} alt="" className="w-10 h-10 rounded-full" />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 text-sm font-medium">
+                {user.name?.charAt(0) || '?'}
+              </div>
+            )}
+            <div>
+              <p className="text-sm font-medium text-slate-900">{user.name}</p>
+              <p className="text-xs text-slate-500">{user.user_id}</p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div>
+              <label className="block text-xs font-medium text-slate-500 mb-1">你的飞书 user_id</label>
+              <div className="flex items-center gap-2">
+                <code className="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-sm font-mono text-slate-700 select-all break-all">
+                  {user.user_id}
+                </code>
+                <button
+                  onClick={copyUserId}
+                  className="px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors shrink-0"
+                >
+                  {copied ? '已复制' : '复制'}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-left bg-amber-50 border border-amber-100 rounded-xl p-4 mb-6">
+          <h4 className="text-sm font-semibold text-amber-900 mb-2">如何获取授权？</h4>
+          <ol className="text-sm text-amber-800 list-decimal list-inside space-y-1.5">
+            <li>点击上方「复制」按钮，复制你的 user_id</li>
+            <li>将 user_id 发送给系统管理员</li>
+            <li>管理员在用户管理处为你授权</li>
+            <li>授权完成后，点击下方「重新登录」即可进入系统</li>
+          </ol>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <button
+            onClick={() => {
+              localStorage.removeItem(USER_KEY);
+              window.location.reload();
+            }}
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M23 4v6h-6M1 20v-6h6" />
+              <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+            </svg>
+            重新登录
+          </button>
+          <button
+            onClick={onLogout}
+            className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors font-medium"
+          >
+            退出登录
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -896,7 +994,7 @@ function HomeworkPanel({ user }: { user: User }) {
 }
 
 function UserManagementPanel({ user }: { user: User }) {
-  const [roles, setRoles] = useState<Record<string, 'admin' | 'mentor' | 'student'>>({});
+  const [roles, setRoles] = useState<Record<string, UserRole>>({});
   const [profiles, setProfiles] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [userIdInput, setUserIdInput] = useState('');
@@ -1034,7 +1132,7 @@ function UserManagementPanel({ user }: { user: User }) {
           )}
 
           {!loading && Object.keys(roles).length === 0 && (
-            <p className="text-sm text-slate-400 text-center py-8">暂无自定义权限记录，所有未配置用户默认为学员。</p>
+            <p className="text-sm text-slate-400 text-center py-8">暂无用户记录。</p>
           )}
 
           {Object.keys(roles).length > 0 && (
@@ -2480,6 +2578,10 @@ export default function LearnPage() {
         )}
       </div>
     );
+  }
+
+  if (user.role === 'pending') {
+    return <PendingScreen user={user} onLogout={handleLogout} />;
   }
 
   const isMentorOrAdmin = user.role === 'mentor' || user.role === 'admin';
